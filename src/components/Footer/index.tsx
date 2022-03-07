@@ -8,7 +8,7 @@ function Footer(props: FooterProps = {}) {
   const { className, ...restProps } = props;
   return (
     <Layout.Footer className={cs(styles.footer, className)} {...restProps}>
-      dgiot-dashboard-next
+      dgiot-dashboard-lite
     </Layout.Footer>
   );
 }

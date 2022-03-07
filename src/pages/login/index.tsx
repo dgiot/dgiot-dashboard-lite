@@ -14,7 +14,7 @@ function Login() {
     <div className={styles.container}>
       <div className={styles.logo}>
         <Logo />
-        <div className={styles['logo-text']}>dgiot-dashboard-next</div>
+        <div className={styles['logo-text']}>dgiot-dashboard-lite</div>
       </div>
       <div className={styles.banner}>
         <div className={styles['banner-inner']}>

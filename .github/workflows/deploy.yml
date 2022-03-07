@@ -57,7 +57,7 @@ jobs:
       - name: Build project  🚀
         env:
           NODE_OPTIONS: --max_old_space_size=4096
-        run: vite build --base=/dgiot-dashboard-next/
+        run: vite build --base=/dgiot-dashboard-lite/
 
       - name: Deploy to github gh-pages 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
@@ -75,29 +75,29 @@ jobs:
       - name: Deploy to surge 🚀
         uses: dswistowski/surge-sh-action@v1
         with:
-          domain: 'dgiot-dashboard-next.surge.sh'
+          domain: 'dgiot-dashboard-lite.surge.sh'
           project: './dist'
           login: ${{ secrets.surge_login }}
           token: ${{ secrets.surge_token }}
 
-#      - name: Sync dgiot-dashboard-next Pages  🚀
+#      - name: Sync dgiot-dashboard-lite Pages  🚀
 #        uses: yanglbme/gitee-pages-action@main
 #        with:
 #          gitee-username: ${{ secrets.GITEE_USERNAME }}
 #          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-#          gitee-repo: dgiiot/dgiot-dashboard-next
+#          gitee-repo: dgiiot/dgiot-dashboard-lite
 #          branch: gh-pages
 
-#      - name: Sync to dgiot-dashboard-next 🚀
+#      - name: Sync to dgiot-dashboard-lite 🚀
 #        uses: wearerequired/git-mirror-action@master
 #        env:
 #          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
 #        with:
-#          source-repo: git@github.com:dgiot/dgiot-dashboard-next.git
-#          destination-repo: git@gitee.com:dgiiot/dgiot-dashboard-next.git
+#          source-repo: git@github.com:dgiot/dgiot-dashboard-lite.git
+#          destination-repo: git@gitee.com:dgiiot/dgiot-dashboard-lite.git
 
       - name: Upload  🚀
         uses: actions/upload-artifact@v2
         with:
-          name: dgiot-dashboard-next
+          name: dgiot-dashboard-lite
           path: dist

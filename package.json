@@ -1,11 +1,11 @@
 {
-  "name": "@dgiot/dgiot-dashboard-next",
+  "name": "@dgiot/dgiot-dashboard-lite",
   "version": "1.0.0",
   "author": "h7ml <<dev@h7ml.cn>>",
   "license": "MPL-2.0",
   "private": false,
-  "homepage": "https://github.com/dgiot/dgiot-dashboard-next.git",
-  "description": "dgiot-dashboard-next",
+  "homepage": "https://github.com/dgiot/dgiot-dashboard-lite.git",
+  "description": "dgiot-dashboard-lite",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -97,7 +97,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dgiot/dgiot-dashboard-next.git"
+    "url": "git+https://github.com/dgiot/dgiot-dashboard-lite.git"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
