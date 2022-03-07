@@ -1,0 +1,1 @@
+import e from"./view.be49f141.js";import"../react/react.e5edc743.js";import"../object-assign/object-assign.e5889995.js";import"../@jiaminghi/@jiaminghi.7f5dd186.js";function t(){return React.createElement(e,null)}export{t as default};

@@ -1,0 +1,1 @@
+import{r as e}from"../react/react.e5edc743.js";import{i as r}from"../use-isomorphic-layout-effect/use-isomorphic-layout-effect.c8ea70ee.js";var o=function(o){var t=e.exports.useRef(o);return r((function(){t.current=o})),t};export{o as u};

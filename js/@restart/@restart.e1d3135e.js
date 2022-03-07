@@ -1,0 +1,1 @@
+import{r}from"../react/react.e5edc743.js";function e(e){var t=function(e){var t=r.exports.useRef(e);return r.exports.useEffect((function(){t.current=e}),[e]),t}(e);return r.exports.useCallback((function(){return t.current&&t.current.apply(t,arguments)}),[t])}export{e as u};
