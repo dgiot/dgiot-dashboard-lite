@@ -52,9 +52,10 @@ function Navbar({ show }: { show: boolean }) {
     dispatch({
       type: 'user/logout',
     });
+    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com'
     axios
       .post(
-        '/iotapi/logout',
+        api + '/iotapi/logout',
         {},
         {
           headers: {
@@ -70,7 +71,7 @@ function Navbar({ show }: { show: boolean }) {
         localStorage.removeItem('userInfo');
         Cookies.removeItem('userInfo');
       })
-      .finally(() => {});
+      .finally(() => { });
   }
 
   function onMenuItemClick(key) {
@@ -166,7 +167,7 @@ function Navbar({ show }: { show: boolean }) {
       <div className={styles.left}>
         <div className={styles.logo}>
           <Logo />
-          <div className={styles['logo-name']}>dgiot-dashboard-next</div>
+          <div className={styles['logo-name']}>dgiot</div>
         </div>
       </div>
       <ul className={styles.right}>

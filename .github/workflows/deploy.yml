@@ -50,10 +50,6 @@ jobs:
 
       - name: Install Deps  🚀
         run: yarn install --frozen-lockfile
-
-      - name: Install Vite  🚀
-        run:  yarn global add vite
-
       - name: Build project  🚀
         env:
           NODE_OPTIONS: --max_old_space_size=4096
@@ -66,13 +62,19 @@ jobs:
           BRANCH: gh-pages
           FOLDER: dist
 
-#      - name: Deploy to surge 🚀
-#        uses: dswistowski/surge-sh-action@v1
-#        with:
-#          domain: 'dgiot-dashboard-next.surge.sh'
-#          project: './dist'
-#          login: ${{ secrets.surge_login }}
-#          token: ${{ secrets.surge_token }}
+
+      - name: Build surge  🚀
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: vite build --base=/
+
+     - name: Deploy to surge 🚀
+       uses: dswistowski/surge-sh-action@v1
+       with:
+         domain: 'dgiot-dashboard-next.surge.sh'
+         project: './dist'
+         login: ${{ secrets.surge_login }}
+         token: ${{ secrets.surge_token }}
 
 #      - name: Sync dgiot-dashboard-next Pages  🚀
 #        uses: yanglbme/gitee-pages-action@main

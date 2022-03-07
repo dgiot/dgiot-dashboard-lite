@@ -46,38 +46,35 @@ export default function LoginForm() {
       path: '*',
     });
     // 跳转首页
-    window.location.href =
-      process.env.NODE_ENV === 'development' ? '/dgiot-dashboard-next' : '/';
+    window.location.href = '/'
   }
 
   function login(params) {
     setErrorMessage('');
     setLoading(true);
-    if (process.env.NODE_ENV === 'development') {
-      axios
-        .post(
-          '/iotapi/login',
-          {
-            username: params.userName,
-            password: params.password,
-          },
-          { headers: { 'Content-Type': 'text/plain' } }
-        )
-        .then((res) => {
-          const { access_token } = res.data;
-          if (access_token) {
-            // 记录登录状态
-            afterLoginSuccess(params, res.data);
-          } else {
-            setErrorMessage(t['login.form.login.errMsg']);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      afterLoginSuccess(params, params);
-    }
+    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com'
+    axios
+      .post(
+        api + '/iotapi/login',
+        {
+          username: params.userName,
+          password: params.password,
+        },
+        { headers: { 'Content-Type': 'text/plain' } }
+      )
+      .then((res) => {
+        const { access_token } = res.data;
+        if (access_token) {
+          // 记录登录状态
+          afterLoginSuccess(params, res.data);
+        } else {
+          setErrorMessage(t['login.form.login.errMsg']);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
   }
 
   function onSubmitClick() {

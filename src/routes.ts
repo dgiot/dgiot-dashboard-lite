@@ -38,6 +38,20 @@ export const routes: Route[] = [
           { resource: 'menu.dashboard.alibaba', actions: ['write'] },
         ],
       },
+      {
+        name: 'menu.dashboard.datav',
+        key: 'dashboard/datav',
+        requiredPermissions: [
+          { resource: 'menu.dashboard.datav', actions: ['write'] },
+        ],
+      },
+          {
+        name: 'menu.dashboard.baiduMap',
+        key: 'dashboard/baiduMap',
+        requiredPermissions: [
+          { resource: 'menu.dashboard.baiduMap', actions: ['write'] },
+        ],
+      },
     ],
   },
   {
