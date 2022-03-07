@@ -1,1 +1,0 @@
-var e={__esModule:!0},r=e.default=function(e,r){if(e&&r){var t=Array.isArray(r)?r:r.split(","),a=e.name||"",o=(e.type||"").toLowerCase(),s=o.replace(/\/.*$/,"");return t.some((function(e){var r=e.trim().toLowerCase();return"."===r.charAt(0)?a.toLowerCase().endsWith(r):r.endsWith("/*")?s===r.replace(/\/.*$/,""):o===r}))}return!0};export{r as _,e};
