@@ -12,26 +12,15 @@ export default function StudioInformation() {
       </Typography.Title>
       <Form layout="vertical">
         <Form.Item label={t['monitor.studioInfo.label.studioTitle']} required>
-          <Input
-            placeholder={`王立群${t['monitor.studioInfo.placeholder.studioTitle']}`}
-          />
+          <Input placeholder={`王立群${t['monitor.studioInfo.placeholder.studioTitle']}`} />
         </Form.Item>
-        <Form.Item
-          label={t['monitor.studioInfo.label.onlineNotification']}
-          required
-        >
+        <Form.Item label={t['monitor.studioInfo.label.onlineNotification']} required>
           <Input.TextArea />
         </Form.Item>
-        <Form.Item
-          label={t['monitor.studioInfo.label.studioCategory']}
-          required
-        >
+        <Form.Item label={t['monitor.studioInfo.label.studioCategory']} required>
           <Input.Search />
         </Form.Item>
-        <Form.Item
-          label={t['monitor.studioInfo.label.studioCategory']}
-          required
-        >
+        <Form.Item label={t['monitor.studioInfo.label.studioCategory']} required>
           <Input.Search />
         </Form.Item>
       </Form>

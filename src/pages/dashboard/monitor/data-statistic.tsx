@@ -10,14 +10,8 @@ export default function DataStatistic() {
   return (
     <Card>
       <Tabs defaultActiveTab="liveMethod">
-        <Tabs.TabPane
-          key="liveMethod"
-          title={t['monitor.tab.title.liveMethod']}
-        />
-        <Tabs.TabPane
-          key="onlineUsers"
-          title={t['monitor.tab.title.onlineUsers']}
-        />
+        <Tabs.TabPane key="liveMethod" title={t['monitor.tab.title.liveMethod']} />
+        <Tabs.TabPane key="onlineUsers" title={t['monitor.tab.title.onlineUsers']} />
       </Tabs>
       <div className={styles['data-statistic-content']}>
         <Radio.Group defaultValue="3" type="button">

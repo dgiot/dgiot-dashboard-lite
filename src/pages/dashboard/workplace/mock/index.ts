@@ -33,7 +33,7 @@ setupMock({
                 '致敬坚守战“疫”一线的社区工作者',
                 '普高还是职高？家长们陷入选校难题',
               ]),
-            pv: function () {
+            pv() {
               return 500000 - 3200 * this.rank;
             },
             increase: '@float(-1, 1)',

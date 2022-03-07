@@ -17,9 +17,7 @@ function PopularContent() {
   const fetchData = useCallback(() => {
     setLoading(true);
     axios
-      .get(
-        `/api/workplace/popular-contents?page=${page}&pageSize=5&category=${type}`
-      )
+      .get(`/api/workplace/popular-contents?page=${page}&pageSize=5&category=${type}`)
       .then((res) => {
         setData(res.data.list);
         setTotal(res.data.total);
@@ -65,7 +63,7 @@ function PopularContent() {
         return (
           <span>
             {`${(text * 100).toFixed(2)}%`}
-            <span className={styles['symbol']}>
+            <span className={styles.symbol}>
               {text < 0 ? (
                 <IconCaretUp style={{ color: 'rgb(var(--green-6))' }} />
               ) : (
@@ -81,9 +79,7 @@ function PopularContent() {
   return (
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography.Title heading={6}>
-          {t['workplace.popularContents']}
-        </Typography.Title>
+        <Typography.Title heading={6}>{t['workplace.popularContents']}</Typography.Title>
         <Link>{t['workplace.seeMore']}</Link>
       </div>
       <Radio.Group

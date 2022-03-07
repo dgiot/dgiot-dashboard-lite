@@ -16,7 +16,7 @@ function PeriodLine({ data, loading }: { data: any[]; loading: boolean }) {
         data={data}
         autoFit
         scale={{ time: 'time' }}
-        className={'chart-wrapper'}
+        className="chart-wrapper"
       >
         <Line shape="smooth" position="time*rate" color={['name', lineColor]} />
         <Tooltip crosshairs={{ type: 'x' }} showCrosshairs shared>

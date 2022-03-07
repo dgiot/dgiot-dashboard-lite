@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Space,
-  Select,
-  Input,
-  Button,
-  Typography,
-  Spin,
-} from '@arco-design/web-react';
+import { Space, Select, Input, Button, Typography, Spin } from '@arco-design/web-react';
 import { IconDownload, IconFaceSmileFill } from '@arco-design/web-react/icon';
 import axios from 'axios';
 import useLocale from '@/utils/useLocale';
@@ -38,21 +31,14 @@ export default function ChatPanel() {
   return (
     <div className={styles['chat-panel']}>
       <div className={styles['chat-panel-header']}>
-        <Typography.Title
-          style={{ marginTop: 0, marginBottom: 16 }}
-          heading={6}
-        >
+        <Typography.Title style={{ marginTop: 0, marginBottom: 16 }} heading={6}>
           {t['monitor.title.chatPanel']}
         </Typography.Title>
         <Space size={8}>
           <Select style={{ width: 80 }} defaultValue="all">
-            <Select.Option value="all">
-              {t['monitor.chat.options.all']}
-            </Select.Option>
+            <Select.Option value="all">{t['monitor.chat.options.all']}</Select.Option>
           </Select>
-          <Input.Search
-            placeholder={t['monitor.chat.placeholder.searchCategory']}
-          />
+          <Input.Search placeholder={t['monitor.chat.placeholder.searchCategory']} />
           <Button type="text" iconOnly>
             <IconDownload />
           </Button>

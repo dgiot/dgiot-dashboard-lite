@@ -35,7 +35,5 @@ export default function clipboard(text) {
 
   return success
     ? Promise.resolve()
-    : Promise.reject(
-        new DOMException('The request is not allowed', 'NotAllowedError')
-      );
+    : Promise.reject(new DOMException('The request is not allowed', 'NotAllowedError'));
 }

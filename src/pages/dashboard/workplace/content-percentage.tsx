@@ -28,9 +28,7 @@ function PopularContent() {
 
   return (
     <Card>
-      <Typography.Title heading={6}>
-        {t['workplace.contentPercentage']}
-      </Typography.Title>
+      <Typography.Title heading={6}>{t['workplace.contentPercentage']}</Typography.Title>
       <Spin loading={loading} style={{ display: 'block' }}>
         <DonutChart
           autoFit

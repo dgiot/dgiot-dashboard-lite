@@ -21,25 +21,11 @@ function MultiAreaLine({ data, loading }: { data: any[]; loading: boolean }) {
         padding={[10, 0, 30, 30]}
         autoFit
         scale={{ time: 'time' }}
-        className={'chart-wrapper'}
+        className="chart-wrapper"
       >
-        <Line
-          shape="smooth"
-          position="time*count"
-          color={['name', lineColorMap]}
-        />
-        <Area
-          position="time*count"
-          shape="smooth"
-          color={['name', areaColorMap]}
-          tooltip={false}
-        />
-        <Tooltip
-          crosshairs={{ type: 'x' }}
-          showCrosshairs
-          shared
-          showMarkers={true}
-        >
+        <Line shape="smooth" position="time*count" color={['name', lineColorMap]} />
+        <Area position="time*count" shape="smooth" color={['name', areaColorMap]} tooltip={false} />
+        <Tooltip crosshairs={{ type: 'x' }} showCrosshairs shared showMarkers>
           {(title, items) => {
             return (
               <CustomTooltip
@@ -50,10 +36,7 @@ function MultiAreaLine({ data, loading }: { data: any[]; loading: boolean }) {
             );
           }}
         </Tooltip>
-        <Axis
-          name="count"
-          label={{ formatter: (value) => `${Number(value) / 100} k` }}
-        />
+        <Axis name="count" label={{ formatter: (value) => `${Number(value) / 100} k` }} />
         <Legend visible={false} />
       </Chart>
     </Spin>

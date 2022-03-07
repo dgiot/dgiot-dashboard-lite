@@ -1,10 +1,5 @@
-import React from 'react';
-import { Space } from '@arco-design/web-react';
 import Overview from './overview';
-import './mock';
-
-function Amis() {
-  return <Overview />;
+import React,{ Component } from "react";
+export default function Amis() {
+  return(<Overview />)
 }
-
-export default Amis;

@@ -19,10 +19,7 @@ export default function Studio(props: StudioProps) {
     <Card>
       <Grid.Row>
         <Grid.Col span={16}>
-          <Typography.Title
-            style={{ marginTop: 0, marginBottom: 16 }}
-            heading={6}
-          >
+          <Typography.Title style={{ marginTop: 0, marginBottom: 16 }} heading={6}>
             {t['monitor.title.studioPreview']}
           </Typography.Title>
         </Grid.Col>

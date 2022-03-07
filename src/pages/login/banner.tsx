@@ -33,11 +33,7 @@ export default function LoginBanner() {
           <div className={styles['carousel-item']}>
             <div className={styles['carousel-title']}>{item.slogan}</div>
             <div className={styles['carousel-sub-title']}>{item.subSlogan}</div>
-            <img
-              alt="banner-image"
-              className={styles['carousel-image']}
-              src={item.image}
-            />
+            <img alt="banner-image" className={styles['carousel-image']} src={item.image} />
           </div>
         </div>
       ))}

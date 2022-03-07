@@ -1,11 +1,6 @@
 import React from 'react';
 import { Button, Card, Typography, Space } from '@arco-design/web-react';
-import {
-  IconArrowRight,
-  IconStop,
-  IconSwap,
-  IconTags,
-} from '@arco-design/web-react/icon';
+import { IconArrowRight, IconStop, IconSwap, IconTags } from '@arco-design/web-react/icon';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 

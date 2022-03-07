@@ -6,13 +6,7 @@ import CustomTooltip from './customer-tooltip';
 function MultiInterval({ data, loading }: { data: any[]; loading: boolean }) {
   return (
     <Spin loading={loading} style={{ width: '100%' }}>
-      <Chart
-        height={370}
-        padding="auto"
-        data={data}
-        autoFit
-        className={'chart-wrapper'}
-      >
+      <Chart height={370} padding="auto" data={data} autoFit className="chart-wrapper">
         <Interval
           adjust="stack"
           color={['name', ['#81E2FF', '#00B2FF', '#246EFF']]}

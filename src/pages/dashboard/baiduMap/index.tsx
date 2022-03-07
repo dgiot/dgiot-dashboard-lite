@@ -1,4 +1,3 @@
-
 import Maps from './maps';
 
 function baiduMap() {

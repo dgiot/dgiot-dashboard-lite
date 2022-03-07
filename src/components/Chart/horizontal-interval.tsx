@@ -32,7 +32,7 @@ function HorizontalInterval({
           width: path[1][1] - path[0][1],
           height: path[1][2] - path[2][2],
           fill: cfg.color,
-          radius: radius,
+          radius,
         },
       });
       return group;
@@ -41,20 +41,9 @@ function HorizontalInterval({
 
   return (
     <Spin loading={loading} style={{ width: '100%' }}>
-      <Chart
-        height={height || 370}
-        padding="auto"
-        data={data}
-        autoFit
-        className={'chart-wrapper'}
-      >
+      <Chart height={height || 370} padding="auto" data={data} autoFit className="chart-wrapper">
         <Coordinate transpose />
-        <Interval
-          color="#4086FF"
-          position="name*count"
-          size={10}
-          shape="border-radius"
-        />
+        <Interval color="#4086FF" position="name*count" size={10} shape="border-radius" />
         <Tooltip>
           {(title, items) => {
             return <CustomTooltip title={title} data={items} />;

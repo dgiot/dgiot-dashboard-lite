@@ -8,8 +8,7 @@ import useLocale from '@/utils/useLocale';
 import styles from './style/color-panel.module.less';
 
 function ColorPanel() {
-  const theme =
-    document.querySelector('body').getAttribute('arco-theme') || 'light';
+  const theme = document.querySelector('body').getAttribute('arco-theme') || 'light';
   const settings = useSelector((state: GlobalState) => state.settings);
   const locale = useLocale();
   const themeColor = settings.themeColor;
@@ -36,30 +35,20 @@ function ColorPanel() {
               });
               newList.forEach((l, index) => {
                 const rgbStr = getRgbStr(l);
-                document.body.style.setProperty(
-                  `--arcoblue-${index + 1}`,
-                  rgbStr
-                );
+                document.body.style.setProperty(`--arcoblue-${index + 1}`, rgbStr);
               });
             }}
           />
         )}
       >
         <div className={styles.input}>
-          <div
-            className={styles.color}
-            style={{ backgroundColor: themeColor }}
-          />
+          <div className={styles.color} style={{ backgroundColor: themeColor }} />
           <span>{themeColor}</span>
         </div>
       </Trigger>
       <ul className={styles.ul}>
         {list.map((item, index) => (
-          <li
-            key={index}
-            className={styles.li}
-            style={{ backgroundColor: item }}
-          />
+          <li key={index} className={styles.li} style={{ backgroundColor: item }} />
         ))}
       </ul>
       <Typography.Paragraph style={{ fontSize: 12 }}>

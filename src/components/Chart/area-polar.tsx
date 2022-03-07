@@ -1,16 +1,8 @@
 import React from 'react';
-import {
-  Chart,
-  Line,
-  Axis,
-  Area,
-  Tooltip,
-  Coordinate,
-  Legend,
-} from 'bizcharts';
-import CustomTooltip from './customer-tooltip';
+import { Chart, Line, Axis, Area, Tooltip, Coordinate, Legend } from 'bizcharts';
 import { Spin } from '@arco-design/web-react';
 import DataSet from '@antv/data-set';
+import CustomTooltip from './customer-tooltip';
 
 interface AreaPolarProps {
   data: any[];
@@ -25,7 +17,7 @@ function AreaPolar(props: AreaPolarProps) {
   const dv = new DataView().source(data);
   dv.transform({
     type: 'fold',
-    fields: fields, // 展开字段集
+    fields, // 展开字段集
     key: 'category', // key字段
     value: 'score', // value字段
   });
@@ -44,7 +36,7 @@ function AreaPolar(props: AreaPolarProps) {
           },
         }}
         interactions={['legend-highlight']}
-        className={'chart-wrapper'}
+        className="chart-wrapper"
       >
         <Coordinate type="polar" radius={0.8} />
         <Tooltip shared>
@@ -62,11 +54,7 @@ function AreaPolar(props: AreaPolarProps) {
           tooltip={false}
           color={[
             'category',
-            [
-              'rgba(49, 60, 169, 0.4)',
-              'rgba(33, 204, 255, 0.4)',
-              'rgba(36, 158, 255, 0.4)',
-            ],
+            ['rgba(49, 60, 169, 0.4)', 'rgba(33, 204, 255, 0.4)', 'rgba(36, 158, 255, 0.4)'],
           ]}
         />
         <Axis name="score" label={false} />

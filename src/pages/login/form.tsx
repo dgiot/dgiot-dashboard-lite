@@ -1,27 +1,20 @@
-import {
-  Form,
-  Input,
-  Checkbox,
-  Link,
-  Button,
-  Space,
-} from '@arco-design/web-react';
+import { Form, Input, Checkbox, Link, Button, Space } from '@arco-design/web-react';
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-import Cookies from 'js-cookie';
+
 window.dgiotStore = Cookies;
 export default function LoginForm() {
   const formRef = useRef<FormInstance>();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loginParams, setLoginParams, removeLoginParams] =
-    useStorage('loginParams');
+  const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
 
   const t = useLocale(locale);
 
@@ -46,16 +39,16 @@ export default function LoginForm() {
       path: '*',
     });
     // 跳转首页
-    window.location.href = '/'
+    window.location.href = '/';
   }
 
   function login(params) {
     setErrorMessage('');
     setLoading(true);
-    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com'
+    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com';
     axios
       .post(
-        api + '/iotapi/login',
+        `${api}/iotapi/login`,
         {
           username: params.userName,
           password: params.password,
@@ -74,7 +67,6 @@ export default function LoginForm() {
       .finally(() => {
         setLoading(false);
       });
-
   }
 
   function onSubmitClick() {
@@ -96,9 +88,7 @@ export default function LoginForm() {
   return (
     <div className={styles['login-form-wrapper']}>
       <div className={styles['login-form-title']}>{t['login.form.title']}</div>
-      <div className={styles['login-form-sub-title']}>
-        {t['login.form.title']}
-      </div>
+      <div className={styles['login-form-sub-title']}>{t['login.form.title']}</div>
       <div className={styles['login-form-error-msg']}>{errorMessage}</div>
       <Form
         className={styles['login-form']}
@@ -136,11 +126,7 @@ export default function LoginForm() {
           <Button type="primary" long onClick={onSubmitClick} loading={loading}>
             {t['login.form.login']}
           </Button>
-          <Button
-            type="text"
-            long
-            className={styles['login-form-register-btn']}
-          >
+          <Button type="text" long className={styles['login-form-register-btn']}>
             {t['login.form.register']}
           </Button>
         </Space>

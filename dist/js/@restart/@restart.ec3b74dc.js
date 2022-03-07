@@ -1,0 +1,1 @@
+import{r}from"../react/react.fab41096.js";function t(t){var e=function(t){var e=r.exports.useRef(t);return r.exports.useEffect((function(){e.current=t}),[t]),e}(t);return r.exports.useCallback((function(){return e.current&&e.current.apply(e,arguments)}),[e])}export{t as u};

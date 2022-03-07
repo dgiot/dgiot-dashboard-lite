@@ -25,6 +25,7 @@ import {
   IconTag,
 } from '@arco-design/web-react/icon';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import { GlobalState } from '@/store';
 import { GlobalContext } from '@/context';
 import useLocale from '@/utils/useLocale';
@@ -36,7 +37,6 @@ import styles from './style/index.module.less';
 import defaultLocale from '@/locale';
 import useStorage from '@/utils/useStorage';
 import { generatePermission } from '@/routes';
-import axios from 'axios';
 
 function Navbar({ show }: { show: boolean }) {
   const t = useLocale();
@@ -52,16 +52,15 @@ function Navbar({ show }: { show: boolean }) {
     dispatch({
       type: 'user/logout',
     });
-    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com'
+    const api = process.env.NODE_ENV === 'development' ? '' : 'https://dev.iotn2n.com';
     axios
       .post(
-        api + '/iotapi/logout',
+        `${api}/iotapi/logout`,
         {},
         {
           headers: {
             'Content-Type': 'application/json',
-            sessionToken: JSON.parse(localStorage.getItem('userInfo'))
-              .access_token,
+            sessionToken: JSON.parse(localStorage.getItem('userInfo')).access_token,
           },
         }
       )
@@ -71,7 +70,7 @@ function Navbar({ show }: { show: boolean }) {
         localStorage.removeItem('userInfo');
         Cookies.removeItem('userInfo');
       })
-      .finally(() => { });
+      .finally(() => {});
   }
 
   function onMenuItemClick(key) {
@@ -92,16 +91,12 @@ function Navbar({ show }: { show: boolean }) {
         },
       },
     });
-  }, [role]);
+  }, [dispatch, role, userInfo]);
 
   if (!show) {
     return (
       <div className={styles['fixed-settings']}>
-        <Settings
-          trigger={
-            <Button icon={<IconSettings />} type="primary" size="large" />
-          }
-        />
+        <Settings trigger={<Button icon={<IconSettings />} type="primary" size="large" />} />
       </div>
     );
   }
@@ -119,9 +114,7 @@ function Navbar({ show }: { show: boolean }) {
           <>
             <IconUser className={styles['dropdown-icon']} />
             <span className={styles['user-role']}>
-              {role === 'admin'
-                ? t['menu.user.role.admin']
-                : t['menu.user.role.user']}
+              {role === 'admin' ? t['menu.user.role.admin'] : t['menu.user.role.user']}
             </span>
           </>
         }
@@ -172,10 +165,7 @@ function Navbar({ show }: { show: boolean }) {
       </div>
       <ul className={styles.right}>
         <li>
-          <Input.Search
-            className={styles.round}
-            placeholder={t['navbar.search.placeholder']}
-          />
+          <Input.Search className={styles.round} placeholder={t['navbar.search.placeholder']} />
         </li>
         <li>
           <Select

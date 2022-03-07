@@ -18,10 +18,7 @@ export default function QuickOperation() {
         <div className={styles['data-statistic-list-cover-wrapper']}>
           <img src={record.cover} />
           {record.status === -1 && (
-            <Tag
-              color="red"
-              className={styles['data-statistic-list-cover-tag']}
-            >
+            <Tag color="red" className={styles['data-statistic-list-cover-tag']}>
               {t['monitor.list.tag.auditFailed']}
             </Tag>
           )}
@@ -63,10 +60,7 @@ export default function QuickOperation() {
         border={false}
         pagination={false}
       />
-      <Typography.Text
-        type="secondary"
-        className={styles['data-statistic-list-tip']}
-      >
+      <Typography.Text type="secondary" className={styles['data-statistic-list-tip']}>
         {t['monitor.list.tip.rotations']}
         {data.length}
         {t['monitor.list.tip.rest']}

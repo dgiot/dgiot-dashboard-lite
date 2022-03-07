@@ -10,14 +10,15 @@
     "start": "vite",
     "dev": "vite",
     "preview": "vite preview",
+    "build": "vite build",
     "eslint": "eslint src/ --ext .ts,.tsx --fix --cache",
-    "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
+    "stylelint": "stylelint src/**/*.less src/**/*.css --fix --cache",
     "lint": "npm run eslint && npm run stylelint"
   },
   "dependencies": {
     "@antv/data-set": "^0.11.8",
     "@arco-design/color": "^0.4.0",
-    "@arco-design/web-react": "^2.27.0",
+    "@arco-design/web-react": ">=2.0.0",
     "@arco-plugins/vite-react": "^1.0.5",
     "@arco-themes/react-arco-pro": "^0.0.7",
     "@jiaminghi/data-view-react": "^1.2.5",
@@ -30,12 +31,14 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-to-clipboard": "^3.3.1",
     "eslint": "^8.10.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
     "html-webpack-plugin": "^5.5.0",
     "loadsh": "^0.0.4",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
-    "monaco-editor-webpack-plugin": "^7.0.1",
     "nprogress": "^0.2.0",
     "qs": "^6.10.3",
     "query-string": "^6.13.8",
@@ -46,6 +49,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.2",
+    "rollup-plugin-visualizer": "^5.6.0",
     "vite": "^2.8.6"
   },
   "devDependencies": {
@@ -60,6 +64,7 @@
     "@typescript-eslint/parser": "^5.4.0",
     "@vitejs/plugin-react": "^1.1.0",
     "amis": "1.7.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-prettier": "^4.0.0",
@@ -75,7 +80,7 @@
     "stylelint": "^14.1.0",
     "stylelint-config-css-modules": "^2.3.0",
     "stylelint-config-standard": "^24.0.0",
-    "typescript": "^4.5.2",
+    "typescript": "^3.3.1",
     "vite": "^2.8.6"
   },
   "browserslist": {
@@ -101,15 +106,20 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "npm run eslint",
+      "npm run lint",
       "git add"
     ],
     "*.{css, less}": [
-      "npm run stylelint",
+      "npm run lint",
       "git add"
     ]
   },
   "peerDependencies": {
     "@arco-design/web-react": ">=2.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

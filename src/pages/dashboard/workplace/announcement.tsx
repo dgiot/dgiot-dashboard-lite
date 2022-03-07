@@ -43,9 +43,7 @@ function Announcement() {
   return (
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography.Title heading={6}>
-          {t['workplace.announcement']}
-        </Typography.Title>
+        <Typography.Title heading={6}>{t['workplace.announcement']}</Typography.Title>
         <Link>{t['workplace.seeMore']}</Link>
       </div>
       <Skeleton loading={loading} text={{ rows: 5, width: '100%' }} animation>

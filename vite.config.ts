@@ -5,9 +5,46 @@ import svgrPlugin from '@arco-plugins/vite-plugin-svgr';
 import vitePluginForArco from '@arco-plugins/vite-react';
 // @ts-ignore
 import setting from './src/settings.json';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // https://www.bianchengquan.com/article/221536.html
+  optimizeDeps: {
+    include: ["lodash"]
+  },
+  build: {
+    sourcemap: false,
+    minify: 'terser',
+    chunkSizeWarningLimit: 1500,
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return id
+                .toString()
+                .split('node_modules/')[1]
+                .split('/')[0]
+                .toString();
+          }
+        },
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+              ? chunkInfo.facadeModuleId.split('/')
+              : [];
+          const fileName =
+              facadeModuleId[facadeModuleId.length - 2] || '[name]';
+          return `js/${fileName}/[name].[hash].js`;
+        }
+      }
+    }
+  },
   server: {
     // https://cn.vitejs.dev/config/#server-proxy
     proxy: {
@@ -49,8 +86,23 @@ export default defineConfig({
         'arcoblue-6': setting.themeColor,
       },
     }),
+    visualizer()
   ],
   css: {
+    // https://www.jianshu.com/p/a45f48448be9
+    postcss: {
+      plugins: [
+        {
+          postcssPlugin: 'internal:charset-removal',
+          AtRule: {
+            charset: (atRule) => {
+              if (atRule.name === 'charset')
+                atRule.remove();
+            }
+          }
+        }
+      ]
+    },
     preprocessorOptions: {
       less: {
         javascriptEnabled: true,

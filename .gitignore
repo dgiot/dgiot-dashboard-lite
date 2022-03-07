@@ -8,6 +8,9 @@ yarn.lock
 yarn.error.log
 pnpm-lock.yaml
 package-lock.yaml
+.stylelintcache
+stats.html
+/dist
 # testing
 /coverage
 

@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import groupBy from 'lodash/groupBy';
-import {
-  Trigger,
-  Badge,
-  Tabs,
-  Avatar,
-  Spin,
-  Button,
-} from '@arco-design/web-react';
+import { Trigger, Badge, Tabs, Avatar, Spin, Button } from '@arco-design/web-react';
 import {
   IconMessage,
   IconCustomerService,
@@ -55,10 +48,7 @@ function DropContent() {
   }, []);
 
   useEffect(() => {
-    const groupData: { [key: string]: MessageListType } = groupBy(
-      sourceData,
-      'type'
-    );
+    const groupData: { [key: string]: MessageListType } = groupBy(sourceData, 'type');
     setGroupData(groupData);
   }, [sourceData]);
 

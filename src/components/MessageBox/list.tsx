@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  List,
-  Avatar,
-  Typography,
-  Button,
-  Space,
-  Result,
-  Tag,
-} from '@arco-design/web-react';
+import { List, Avatar, Typography, Button, Space, Result, Tag } from '@arco-design/web-react';
 import useLocale from '../../utils/useLocale';
 import styles from './style/index.module.less';
 
@@ -31,10 +23,7 @@ interface MessageListProps {
   data: MessageItemData[];
   unReadData: MessageItemData[];
   onItemClick?: (item: MessageItemData, index: number) => void;
-  onAllBtnClick?: (
-    unReadData: MessageItemData[],
-    data: MessageItemData[]
-  ) => void;
+  onAllBtnClick?: (unReadData: MessageItemData[], data: MessageItemData[]) => void;
 }
 
 function MessageList(props: MessageListProps) {
@@ -96,9 +85,7 @@ function MessageList(props: MessageListProps) {
                 <div className={styles['message-title']}>
                   <Space size={4}>
                     <span>{item.title}</span>
-                    <Typography.Text type="secondary">
-                      {item.subTitle}
-                    </Typography.Text>
+                    <Typography.Text type="secondary">{item.subTitle}</Typography.Text>
                   </Space>
                   {item.tag && item.tag.text ? (
                     <Tag color={item.tag.color}>{item.tag.text}</Tag>

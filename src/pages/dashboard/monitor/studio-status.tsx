@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  Typography,
-  Tag,
-  Space,
-  Descriptions,
-} from '@arco-design/web-react';
+import { Card, Typography, Tag, Space, Descriptions } from '@arco-design/web-react';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 
@@ -80,29 +74,16 @@ export default function StudioStatus() {
   return (
     <Card>
       <Space align="start">
-        <Typography.Title
-          style={{ marginTop: 0, marginBottom: 16 }}
-          heading={6}
-        >
+        <Typography.Title style={{ marginTop: 0, marginBottom: 16 }} heading={6}>
           {t['monitor.studioStatus.title.studioStatus']}
         </Typography.Title>
         <Tag color="green">{t['monitor.studioStatus.smooth']}</Tag>
       </Space>
-      <Descriptions
-        colon=": "
-        layout="horizontal"
-        data={dataStatus}
-        column={2}
-      />
+      <Descriptions colon=": " layout="horizontal" data={dataStatus} column={2} />
       <Typography.Title style={{ marginBottom: 16 }} heading={6}>
         {t['monitor.studioStatus.title.pictureInfo']}
       </Typography.Title>
-      <Descriptions
-        colon=": "
-        layout="horizontal"
-        data={dataPicture}
-        column={2}
-      />
+      <Descriptions colon=": " layout="horizontal" data={dataPicture} column={2} />
     </Card>
   );
 }

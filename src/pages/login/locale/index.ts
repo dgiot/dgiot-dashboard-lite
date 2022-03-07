@@ -11,8 +11,7 @@ const i18n = {
     'login.form.login': 'login',
     'login.form.register': 'register account',
     'login.banner.slogan1': 'Out-of-the-box high-quality template',
-    'login.banner.subSlogan1':
-      'Rich page templates, covering most typical business scenarios',
+    'login.banner.subSlogan1': 'Rich page templates, covering most typical business scenarios',
     'login.banner.slogan2': 'Built-in solutions to common problems',
     'login.banner.subSlogan2':
       'Internationalization, routing configuration, state management everything',
@@ -33,8 +32,7 @@ const i18n = {
     'login.banner.slogan1': '国内首款轻量级开源工业物联网平台',
     'login.banner.subSlogan1': '30分钟快速部署，千万级设备承载、电信级稳定性。',
     'login.banner.slogan2': '内置了常见问题的解决方案',
-    'login.banner.subSlogan2':
-      '物模型-规则引擎-数据通道-组态页面全流程低代码开发',
+    'login.banner.subSlogan2': '物模型-规则引擎-数据通道-组态页面全流程低代码开发',
     'login.banner.slogan3': '杭州数蛙科技有限公司',
     'login.banner.subSlogan3': '一站式物联网PaaS平台',
   },

@@ -1,4 +1,5 @@
 import defaultSettings from '../settings.json';
+
 export interface GlobalState {
   settings?: typeof defaultSettings;
   userInfo?: {

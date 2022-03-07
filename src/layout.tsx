@@ -89,8 +89,7 @@ function PageLayout() {
 
   const [breadcrumb, setBreadCrumb] = useState([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const [selectedKeys, setSelectedKeys] =
-    useState<string[]>(defaultSelectedKeys);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>(defaultSelectedKeys);
   const [openKeys, setOpenKeys] = useState<string[]>(defaultOpenKeys);
 
   const routeMap = useRef<Map<string, React.ReactNode[]>>(new Map());
@@ -137,13 +136,9 @@ function PageLayout() {
         );
         if (
           route.component &&
-          (!isArray(route.children) ||
-            (isArray(route.children) && !route.children.length))
+          (!isArray(route.children) || (isArray(route.children) && !route.children.length))
         ) {
-          routeMap.current.set(
-            `/${route.key}`,
-            breadcrumb ? [...parentNode, route.name] : []
-          );
+          routeMap.current.set(`/${route.key}`, breadcrumb ? [...parentNode, route.name] : []);
 
           if (level > 1) {
             return <MenuItem key={route.key}>{titleDom}</MenuItem>;
@@ -239,21 +234,12 @@ function PageLayout() {
             <Content>
               <Switch>
                 {flattenRoutes.map((route, index) => {
-                  return (
-                    <Route
-                      key={index}
-                      path={`/${route.key}`}
-                      component={route.component}
-                    />
-                  );
+                  return <Route key={index} path={`/${route.key}`} component={route.component} />;
                 })}
                 <Route exact path="/">
                   <Redirect to={`/${defaultRoute}`} />
                 </Route>
-                <Route
-                  path="*"
-                  component={lazyload(() => import('./pages/exception/403'))}
-                />
+                <Route path="*" component={lazyload(() => import('./pages/exception/403'))} />
               </Switch>
             </Content>
           </div>
