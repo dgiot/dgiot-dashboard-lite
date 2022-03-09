@@ -1,7 +1,6 @@
 import React from 'react';
-import { Space } from '@arco-design/web-react';
+// import Editor from './editor';
 import Overview from './overview';
-import './mock';
 
 function Amis() {
   return <Overview />;
