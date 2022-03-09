@@ -1,0 +1,97 @@
+name: deploy
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# 设置上海时区
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  deploy:
+    name: deploy 🚀
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 16.13.2 ]
+    steps:
+      - name: Checkout 🚀
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }} 🚀
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: restore lerna  🚀
+        uses: actions/cache@v2
+        id: lerna-cache
+        with:
+          path: |
+            node_modules
+            **/node_modules
+          key: ${{ runner.os }}-lerna-${{ hashFiles('yarn.lock') }}
+
+      - name: Get yarn cache directory path  🚀
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: yarn-cache  🚀
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install Deps  🚀
+        run: yarn install --frozen-lockfile
+
+      - name: Install Vite  🚀
+        run:  yarn global add vite
+
+      - name: Build project  🚀
+        env:
+          NODE_OPTIONS: --max_old_space_size=4096
+        run: vite build --base=/dgiot-dashboard-next/
+
+      - name: Deploy to github gh-pages 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist
+
+#      - name: Deploy to surge 🚀
+#        uses: dswistowski/surge-sh-action@v1
+#        with:
+#          domain: 'dgiot-dashboard-next.surge.sh'
+#          project: './dist'
+#          login: ${{ secrets.surge_login }}
+#          token: ${{ secrets.surge_token }}
+
+#      - name: Sync dgiot-dashboard-next Pages  🚀
+#        uses: yanglbme/gitee-pages-action@main
+#        with:
+#          gitee-username: ${{ secrets.GITEE_USERNAME }}
+#          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+#          gitee-repo: dgiiot/dgiot-dashboard-next
+#          branch: gh-pages
+
+#      - name: Sync to dgiot-dashboard-next 🚀
+#        uses: wearerequired/git-mirror-action@master
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+#        with:
+#          source-repo: git@github.com:dgiot/dgiot-dashboard-next.git
+#          destination-repo: git@gitee.com:dgiiot/dgiot-dashboard-next.git
+
+      - name: Upload  🚀
+        uses: actions/upload-artifact@v2
+        with:
+          name: dgiot-dashboard-next
+          path: dist

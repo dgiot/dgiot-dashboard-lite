@@ -1,0 +1,102 @@
+/* stylelint-disable indentation */
+.dataview {
+  width: 100%;
+  height: 100%;
+  background-color: #030409;
+  color: #fff;
+  margin: 0;
+  position: relative;
+
+  .topHeader {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+  }
+
+  #header {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .headerCenterDecoration {
+      position: absolute;
+      left: 50%;
+      width: 40%;
+      height: 60px;
+      margin-top: 30px;
+      transform: translateX(-50%);
+    }
+
+    .centerTitle {
+      position: absolute;
+      font-size: 30px;
+      font-weight: bold;
+      left: 50%;
+      top: 15px;
+      transform: translateX(-50%);
+    }
+  }
+
+  .mainHeader {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .mh-middle {
+      padding-left: 20px;
+      font-size: 25px;
+    }
+  }
+
+  .mainContainer {
+    height: calc(100vh - 100px);
+    width: 100%;
+    // width: 96%;
+    // margin-left: 2%;
+    // display: flex;
+
+    // .border-box-content {
+    //   padding: 20px;
+    //   box-sizing: border-box;
+    //   display: flex;
+    // }
+
+    .leftChartContainer {
+      width: 25%;
+      height: 100%;
+      // margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+
+      // .left-nowdata {
+      //   display: flex;
+      //   flex-wrap: wrap;
+      //   height: 35%;
+      // }
+
+      // .border-box-content {
+      //   flex-direction: column;
+      // }
+    }
+
+    .centerChartContainer {
+      width: 50%;
+      padding: 5px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .rightChartContainer {
+      position: relative;
+      width: 25%;
+      padding-right: 5px;
+      box-sizing: border-box;
+    }
+  }
+}

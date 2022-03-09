@@ -1,0 +1,114 @@
+{
+  "name": "@dgiot/dgiot-dashboard-next",
+  "version": "1.0.0",
+  "author": "h7ml <<dev@h7ml.cn>>",
+  "license": "MPL-2.0",
+  "private": false,
+  "homepage": "https://github.com/dgiot/dgiot-dashboard-next.git",
+  "description": "dgiot-dashboard-next",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "preview": "vite preview",
+    "eslint": "eslint src/ --ext .ts,.tsx --fix --cache",
+    "stylelint": "stylelint 'src/**/*.less' 'src/**/*.css' --fix --cache",
+    "lint": "npm run eslint && npm run stylelint"
+  },
+  "dependencies": {
+    "@antv/data-set": "^0.11.8",
+    "@arco-design/color": "^0.4.0",
+    "@arco-design/web-react": "^2.27.0",
+    "@arco-plugins/vite-react": "^1.0.5",
+    "@arco-themes/react-arco-pro": "^0.0.7",
+    "@jiaminghi/data-view-react": "^1.2.5",
+    "@loadable/component": "^5.13.2",
+    "@turf/turf": "^6.5.0",
+    "axios": "^0.24.0",
+    "bizcharts": "^4.1.11",
+    "classnames": "^2.3.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-to-clipboard": "^3.3.1",
+    "eslint": "^8.10.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.1",
+    "html-webpack-plugin": "^5.5.0",
+    "loadsh": "^0.0.4",
+    "lodash": "^4.17.21",
+    "mockjs": "^1.1.0",
+    "monaco-editor-webpack-plugin": "^7.0.1",
+    "nprogress": "^0.2.0",
+    "qs": "^6.10.3",
+    "query-string": "^6.13.8",
+    "react": "^17.0.2",
+    "react-color": "^2.18.1",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.1.2",
+    "vite": "^2.8.6"
+  },
+  "devDependencies": {
+    "@alilc/lowcode-engine": "^1.0.2",
+    "@arco-design/web-react": "^2.27.0",
+    "@arco-design/webpack-plugin": "^1.6.0",
+    "@arco-plugins/vite-plugin-svgr": "^0.7.2",
+    "@svgr/webpack": "^5.5.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "@vitejs/plugin-react": "^1.1.0",
+    "amis": "1.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.27.1",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "husky": "^7.0.2",
+    "js-cookie": "^3.0.1",
+    "less": "^4.1.2",
+    "less-loader": "7.3.0",
+    "lint-staged": "^11.1.2",
+    "postcss-less": "4",
+    "prettier": "^2.4.1",
+    "stylelint": "^14.1.0",
+    "stylelint-config-css-modules": "^2.3.0",
+    "stylelint-config-standard": "^24.0.0",
+    "typescript": "^4.5.2",
+    "vite": "^2.8.6"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgiot/dgiot-dashboard-next.git"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "npm run eslint",
+      "git add"
+    ],
+    "*.{css, less}": [
+      "npm run stylelint",
+      "git add"
+    ]
+  },
+  "peerDependencies": {
+    "@arco-design/web-react": ">=2.0.0"
+  }
+}
