@@ -1,9 +1,9 @@
 import React from 'react';
 // import Editor from './editor';
-import Overview from './overview';
-
+// import Overview from './overview';
+import HookMqtt from '@/components/Hook/index'
 function Amis() {
-  return <Overview />;
+  return <HookMqtt />;
 }
 
 export default Amis;

@@ -22,7 +22,7 @@ export default defineConfig({
       },
       // 使用 proxy 实例
       '/iotapi': {
-        target: 'http://dev.iotn2n.com',
+        target:   'http://192.168.2.17:5080',  //'http://124.222.232.146'  , //'http://dev.iotn2n.com',
         changeOrigin: true,
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
@@ -30,9 +30,18 @@ export default defineConfig({
       },
        // 使用 proxy 实例
        '/datav': {
-        target: 'http://192.168.1.106:5000',
+        target: 'http://124.222.232.146',
         changeOrigin: true,
         rewrite:(path) => path.replace(/\/datav/, ''),
+        configure: (proxy, options) => {
+          // proxy 是 'http-proxy' 的实例
+        },
+        
+      },
+      '/mock': {
+        target: 'https://datav.usemock.com',
+        changeOrigin: true,
+        rewrite:(path) => path.replace(/\/mock/, ''),
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
         },
@@ -67,4 +76,5 @@ export default defineConfig({
       },
     },
   },
+  
 });

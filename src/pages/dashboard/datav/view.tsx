@@ -44,7 +44,7 @@ const config = {
   showValue: true,
 };
 function View() {
-  return <datav.ConicalColumnChart config={config} style={{ width: '100%', height: '44vh' }} />;
+  return <datav.ConicalColumnChart config={config} style={{ width: '100%', height: '260px' }} />;
 }
 
 export default View;

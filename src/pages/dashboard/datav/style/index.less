@@ -1,13 +1,250 @@
 /* stylelint-disable */
-.dv-border-box-1 {
-  .border-box-content {
-    padding: 20px;
-    box-sizing: border-box;
+.datav {
+  font-size: 16px;
+  background-color: #031129;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  .dv_top {
+    width: 100%;
+    height: 5rem;
+    background: url("../img/导航栏@2x.png") ;
+    background-size: 100% 5rem;
+    position: relative;
     display: flex;
-    .wrap{
-      width: 100%;
+    justify-content: left;
+    align-items: center;
+    .top_left {
+      width: 34%;
+      display: flex;
+      justify-content: space-around;
+      .active {
+        background: -webkit-linear-gradient(
+          bottom,
+          #00a8f2 0%,
+          #0171a9 50%,
+          #033053 100%
+        );
+      }
+      .left_item {
+        flex: 1;
+        margin-top: 0.5rem;
+        margin-left: 0.1rem;
+        margin-right: 1.25rem;
+        line-height: 2.5rem;
+        cursor: pointer;
+        border: 1px solid #0094d7;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .iteminfo {
+          display: inline-block;
+          color: #fff;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .img {
+          width: 1.5rem;
+          height: 1.5rem;
+          margin-right: 0.2rem;
+        }
+      }
+    }
+    .top_center{
+      position: absolute;
+      // margin: 0 auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-40%);
+      font-size: 30px;
+      font-weight: 600;
+    }
+  }
+  .dv_content {
+    width: 100%;
+    flex: 1;
+    padding: 1.25rem;
+    display: flex;
+    box-sizing: border-box;
+    .ct_left {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      .cleft_top {
+        width: 100%;
+        height: 60%;
+        background-color: #031d39;
+        display: flex;
+        flex-direction: column;
+        .lt_title {
+          width: 100%;
+          height: 2.5rem;
+          background: url("../img/左2标题背景@2x.png") no-repeat;
+          background-size: 100% 2.5rem;
+        }
+        .dvItem{
+          display: flex;
+          margin-top: 10px;
+          width: 100%;
+          color: aliceblue;
+          height: 150px;
+          // background-color: #000d32;
+          border-radius: 50%;
+          display: flex;
+          flex-direction: column;
+          .dvitem_name{
+            height: 40px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+          }
+          .dvitem_count{
+            display: flex;
+            line-height: 140px;
+            font-size: 24px;
+            justify-content: center;
+            color: #2cebf5;
+            .count_col{
+              display: inline-block;
+              margin-left: 10px;
+              width: 51px;
+              line-height: 65px;
+              background-color: #012160;
+              text-align: center;
+              // border-radius: 4px;
+              border: 0.5px solid #aa3637;
+              padding: 1px;
+              .col_item{
+                width: 90%;
+                height: 95%;
+                margin: 5% auto;
+                // background-color: #ff0000;
+                // margin: 1px;
+                font-size: 30px;
+                color: #fd4238;
+                background:-webkit-linear-gradient(bottom,#031d39 0% ,#2f1a2c 25%,#7d2a31 50%,#2f1a2c 75%,#031d39 100%);
+              }
+              .col_item2{
+                width: 90%;
+                height: 95%;
+                margin: 5% auto;
+                font-size: 30px;
+                // background-color: #ff0000;
+                // margin: 1px;
+                color: #9e7073;
+                background:-webkit-linear-gradient(bottom,#031d39 0% ,#2f1a2c 25%,#7d2a31 50%,#2f1a2c 75%,#031d39 100%);
+              }
+            }
+          }
+        }
+        .lt_data{
+          flex: 1;
+          margin-top: 10%;
+        }
+      }
+      .cleft_bottom {
+        margin-top: 5%;
+        width: 100%;
+        flex: 1;
+        background-color: #031d39;
+         .lt_title {
+          width: 100%;
+          height: 2.5rem;
+          background: url("../img/左2标题背景@2x.png") no-repeat;
+          background-size: 100% 2.5rem;
+        }
+      }
+    }
+    .ct_center {
+      flex: 2;
+      margin: 0 1.25rem;
+      background-color: #031d39;
+    }
+    .ct_right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .cright_top {
+        width: 100%;
+        height: 60%;
+        background-color: #031d39;
+        .rt_title {
+          width: 100%;
+          height: 2.5rem;
+          background: url("../img/右2标题背景@2x.png") no-repeat;
+          background-size: 100% 2.5rem;
+        }
+      }
+      .cright_bottom {
+        margin-top: 5%;
+        width: 100%;
+        flex: 1;
+        background-color: #031d39;
+         .rt_title {
+          width: 100%;
+          height: 2.5rem;
+          background: url("../img/右2标题背景@2x.png") no-repeat;
+          background-size: 100% 2.5rem;
+        }
+      }
     }
   }
 }
+
+
+// .dv-border-box-1 {
+//   .border-box-content {
+//     padding: 20px;
+//     box-sizing: border-box;
+//     display: flex;
+//     .wrap{
+//       width: 100%;
+//       display: flex;
+//       flex-direction: column;
+//       .dvItem{
+//         display: flex;
+//         margin-top: 30px;
+//         width: 100%;
+//         height: 220px;
+//         // background-color: #000d32;
+//         border-radius: 50%;
+//         display: flex;
+//         flex-direction: column;
+//         .dvitem_name{
+//           height: 40px;
+//           text-align: center;
+//           font-size: 22px;
+//           font-weight: 600;
+//           display: flex;
+//           justify-content: center;
+//         }
+//         .dvitem_count{
+//           display: flex;
+//           line-height: 140px;
+//           font-size: 24px;
+//           justify-content: center;
+//           color: #2cebf5;
+//           .count_col{
+//             display: inline-block;
+//             margin-left: 10px;
+//             width: 51px;
+//             line-height: 65px;
+//             background-color: #012160;
+//             text-align: center;
+//             border-radius: 4px;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// .centerContainer{
+//   width: 100%;
+//   display: flex;
+//   flex-direction: column;
+// }

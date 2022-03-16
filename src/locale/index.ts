@@ -78,6 +78,7 @@ const i18n = {
     'menu.dashboard.monitor': '实时监控',
     'menu.dashboard.amis': '百度低代码',
     'menu.dashboard.alibaba': '阿里低代码',
+    'menu.dashboard.datav': '大屏',
     'menu.visualization.multiDimensionDataAnalysis': '多维数据分析',
     'menu.list.searchTable': '查询表格',
     'menu.form.step': '分步表单',

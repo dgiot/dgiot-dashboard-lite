@@ -15,7 +15,7 @@ export const routes: Route[] = [
     children: [
       {
         name: 'menu.dashboard.workplace',
-        key: 'dashboard/workplace',
+        key: 'dashboard/datav',
       },
       {
         name: 'menu.dashboard.monitor',
@@ -40,7 +40,7 @@ export const routes: Route[] = [
       },
       {
         name: 'menu.dashboard.datav',
-        key: 'dashboard/datav',
+        key: 'dashboard/workplace',
         requiredPermissions: [{ resource: 'menu.dashboard.datav', actions: ['write'] }],
       },
     ],

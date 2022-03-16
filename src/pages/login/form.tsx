@@ -47,7 +47,7 @@ export default function LoginForm() {
     });
     // 跳转首页
     window.location.href =
-      process.env.NODE_ENV === 'development' ? '/dgiot-dashboard-next' : '/';
+      process.env.NODE_ENV !== 'development' ? '/dgiot-dashboard-next' : '/';
   }
 
   function login(params) {
@@ -64,9 +64,12 @@ export default function LoginForm() {
           { headers: { 'Content-Type': 'text/plain' } }
         )
         .then((res) => {
-          const { access_token } = res.data;
-          if (access_token) {
+          const { access_token,sessionToken } = res.data;
+          console.log(res);
+          // return 
+          if (sessionToken) {
             // 记录登录状态
+            localStorage.setItem('sessionToken',sessionToken)
             afterLoginSuccess(params, res.data);
           } else {
             setErrorMessage(t['login.form.login.errMsg']);
@@ -82,6 +85,9 @@ export default function LoginForm() {
 
   function onSubmitClick() {
     formRef.current.validate().then((values) => {
+      console.log(values);
+      // return ;
+      
       login(values);
     });
   }

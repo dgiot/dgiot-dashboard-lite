@@ -3,5 +3,5 @@
  * Vite Environment
  */
 declare interface Window {
-  dgiotStore: any;
+  dgiotStore: any
 }
