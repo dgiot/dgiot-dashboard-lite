@@ -152,11 +152,17 @@
         width: 100%;
         flex: 1;
         background-color: #031d39;
+        display: flex;
+        flex-direction: column;
          .lt_title {
           width: 100%;
           height: 2.5rem;
           background: url("../img/左2标题背景@2x.png") no-repeat;
           background-size: 100% 2.5rem;
+        }
+        .lt_data{
+          flex: 1;
+          margin-top: 1%;
         }
       }
     }
@@ -164,6 +170,49 @@
       flex: 2;
       margin: 0 1.25rem;
       background-color: #031d39;
+      display: flex;
+      flex-direction: column;
+      .ctr_search{
+        flex: 1;
+        // background-color: #03cbfe;
+        .f_wrap{
+          box-sizing: border-box;
+          margin-top: 2.5rem;
+          padding-left: 2rem;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          .f_item{
+            flex: 1;
+            .f_item_btn{
+              display: inline-block;
+              width: 6rem;
+              border-radius: 0.1rem;
+              // padding: 5px 15px;
+              // line-height: 3rem;
+              background: -webkit-linear-gradient(
+                bottom,
+                #00a8f2 0%,
+                #0171a9 50%,
+                #033053 100%
+              );
+            }
+            .f_item_btn:hover{
+              background: -webkit-linear-gradient(
+                bottom,
+                #00a8a2 0%,
+                #0171a9 50%,
+                #033053 100%
+              );
+            }
+          }
+          .f_item2{
+            color: #fff;
+            flex: 2;
+          }
+        }
+        
+      }
     }
     .ct_right {
       flex: 1;
@@ -192,6 +241,32 @@
           background-size: 100% 2.5rem;
         }
       }
+    }
+  }
+}
+.title_left{
+  padding-left: 2rem;
+  height: 100%;
+  margin-left: 0.1rem;
+  margin-right: 1.25rem;
+  line-height: 2.5rem;
+  width: 30%;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  .left_img{
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.2rem;
+  }
+  .left_tol {
+    display: inline-block;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    .arco-form-label-item > label{
+      color: #fff;
     }
   }
 }

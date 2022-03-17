@@ -32,7 +32,7 @@ function Pie(props) {
       // backgroundColor: 'rgba(2, 36, 150, 0.1)',
       //图表标题
       title: {
-        text: '设备状态分布',
+        text: '设备状态',
         left: 1,
         top: 1,
         width: '12rem',

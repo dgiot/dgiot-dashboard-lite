@@ -31,10 +31,11 @@ export class Interceptors {
         // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
         // if (config.headers.isJwt) {
         // }
+        config.headers['Conetent-type'] = "application/json";
         const token = localStorage.getItem('sessionToken');
-        // if (token) {
+        if (token) {
           config.headers['sessionToken'] = token;
-        // }
+        }
 
         return config;
       },

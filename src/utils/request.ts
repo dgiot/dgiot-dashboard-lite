@@ -20,14 +20,7 @@
  
    public getClict(obj){
      return new Promise((resolve,reject)=>{
-       this.axios({
-         url:obj.url,
-         method:obj.method ||'GET',
-         header:obj.header ||{
-           'Content-type':'application/json',
-           'sessionToken':localStorage.getItem('sessionToken')
-         }
-       }).then((res) => {
+       this.axios(obj).then((res) => {
          resolve(res)
         // this.resultHandle(res, resolve);
       }).catch((err) => {

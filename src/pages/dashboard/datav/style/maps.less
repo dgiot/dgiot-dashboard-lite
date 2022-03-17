@@ -1,4 +1,34 @@
 /* stylelint-disable */
-.red {
-  color: #fff;
+.mapactive{
+  position: absolute;
+  width: 100vw;
+  height: 100vw;
+  top: 0;
+  left: 0;
+  z-index:99;
+}
+.mapunactive{
+  position: relative;
+  width: 100%;
+  height: 40%;
+}
+.map_sh{
+  position: absolute;
+  right: 2px;
+  top: 3.5%;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  border: 3px solid #999;
+  border-radius: 2px;
+  box-sizing: border-box;
+  // background-color: aqua;
+  .sh_img{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 20px;
+    height: 20px;
+  }
 }

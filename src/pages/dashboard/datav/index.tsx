@@ -9,6 +9,15 @@ import DeviceMap from './deviceMap'
 import Pie from "./pie";
 import LineDiv from './linediv'
 
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  Button,
+  Message,
+  Grid,
+} from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import "./style/index.less"
 import * as datav from '@jiaminghi/data-view-react';
@@ -24,7 +33,8 @@ import img3 from "./img/tleft/组 5350@2x(3).png";
 
 const httpService = new HttpService()
 
-
+const FormItem = Form.Item;
+const Option = Select.Option;
 function Datav() {
   function formatZero(num, len) {
     if (String(num).length > len) return num;
@@ -159,6 +169,8 @@ function Datav() {
   const [header, setHeader] = useState([])
   const [errorlist, setErrorList] = useState([])
   const [flag, setFlag] = useState(false)
+  const [rows, setRows] = useState([])
+  const [columns, setColumns] = useState([])
 
   const fetchData = () => {
     setLoading(true);
@@ -188,7 +200,8 @@ function Datav() {
     // } else {
     //   interval.current = setInterval(fetchData, 6000);
     // }
-    fetchData()
+
+    // fetchData()
 
     // return () => clearInterval(interval.current)
 
@@ -210,10 +223,77 @@ function Datav() {
       img: img3
     }
   ]
+  //选择头部类型
   const handleIndex = (index) => {
     setcurrentIndex(index)
   }
-  if (flag) {
+  //获取设备历史数据
+  const getHisData=(v)=>{
+    console.log(v);
+    let date1 = new Date(v.date[0]).getTime()
+    let date2 = new Date(v.date[1]).getTime()
+    console.log(date1,date2);
+    let params = {
+      // deviceid:v.objectid,
+      
+      starttime:date1,
+      endtime:date2,
+      style: 'line',
+      interval: '1m',
+      keys: '*',
+      function:'last'
+      // where:[
+      //   {"createdat": {"$gte": date1}},   
+      //     {"createdat": {"$lte":date2}}]
+    }
+  
+
+    httpService.getClict({
+      url: `/datav/iotapi/echart/${v.objectid}`,
+      params,
+      headers:{
+        "sessionToken":"r:27191df83bb4a9fb0d4ecff96328648b" //
+      }
+        // /datav/iotapi/big_screen  /mock/device/getproduct
+    }).then(({chartData}) => {
+      // console.log(chartsData);
+      let xData =[]
+      let yData =[]
+      chartData.rows.forEach((item,index)=>{
+        item.forEach((element,i) => {
+          if(i==0){
+            xData.push(element)
+          }else{
+            yData[i-1].push(element)
+          }
+        });
+      })
+      console.log("历史数据",xData,yData);
+      
+      setRows(chartData.rows)
+      setRows(chartData.columns)
+    })
+  }
+  //选择器
+  const options = [{
+    deviceStatus:"offline",
+    name:'水泵',
+    objectid:'791da07d16'
+  },{
+    deviceStatus:"online",
+    name:'电表',
+    objectid:'afa15a2'
+  },{
+    deviceStatus:"offline",
+    name:'水表',
+    objectid:'fa56faf3'
+  },{
+    deviceStatus:"offline",
+    name:'太阳能板',
+    objectid:'a4gnj15sa'
+  }];
+  const [form] = Form.useForm();
+  if (!flag) {
     return (
       <div className="datav">
         <div className="dv_top">
@@ -272,19 +352,72 @@ function Datav() {
                   }
                 </div>
               </div>
+              <Pie devicelist={deviceList}></Pie>
+
+            </div>
+            <div className="cleft_bottom">
+              <div className="lt_title">
+                <div className='title_left'>
+                  <img className='left_img left_tol' src={img1} alt="" />
+                  <span className='left_name left_tol'>设备分布</span>
+                </div>
+              </div>
               <div className='lt_data'>
                 <Product list={productList} ></Product>
               </div>
             </div>
-            <div className="cleft_bottom">
-              <div className="lt_title"></div>
-              <Pie devicelist={deviceList}></Pie>
-            </div>
           </div>
           <div className="ct_center">
             <Maps marklist={MarkerList}></Maps>
-            {/* <DeviceMap></DeviceMap> */}
-            <LineDiv option={option1}></LineDiv>
+            <div className='ctr_search'>
+              <Form 
+              form={form}
+              style={{ width: '100%' }}
+              onSubmit={(v) => {
+                return getHisData(v)
+              }}
+              className="f_wrap">
+                <FormItem className="f_item"
+                 field='objectid'
+                 rules={[{ required: true, message: '请选择设备' }]}
+                >
+                  <Select
+                    style={{ width: '100%' }}
+                    placeholder='选择设备'
+                  >
+                    {options.map((option, index) => (
+                      <Option key={option.objectid}  value={option.objectid}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormItem>
+                <FormItem 
+                className="f_item2"
+                style={{color:'#fff'}}
+                field='date'
+                rules={[{ required: true, message: '请选择时间' }]}
+                >
+                  <DatePicker.RangePicker
+                    format='YYYY-MM-DD HH:mm:ss'
+                    allowClear
+                    style={{ width: '100%' }}
+                  />
+                </FormItem>
+                <FormItem
+                  className="f_item"
+                  wrapperCol={{
+                    offset: 5,
+                  }}
+                >
+                  <Button htmlType='submit' type='primary' className="f_item_btn" >
+                    搜索
+                  </Button>
+                </FormItem>
+              </Form>
+
+            </div>
+            <LineDiv option={option1} rows={rows} columns={columns} ></LineDiv>
           </div>
           <div className="ct_right">
             <div className="cright_top">
