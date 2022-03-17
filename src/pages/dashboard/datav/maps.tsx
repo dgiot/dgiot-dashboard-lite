@@ -4,9 +4,15 @@ import { Map, Marker, InfoWindow, APILoader } from '@uiw/react-baidu-map';
 import "./style/maps.less"
 import big from "./img/map/放大.png";
 import small from "./img/map/缩小.png";
+function areEqual(prevProps, newxProps) {
+  if (prevProps.markerlist == newxProps.markerlist) {
+    return true
+  }
+  return false
+}
 function Maps(props) {
 
-  console.log("这是传参", props);
+  // console.log("这是传参", props);
   const handleToDetail = (id) => {
     console.log('点击事件', id);
 
@@ -53,9 +59,9 @@ function Maps(props) {
               // 启用滚轮放大缩小，默认禁用
               props.map.enableScrollWheelZoom();
               props.map.setMapStyle({
-  style: "dark",
-  features: []
-}); 
+                style: "dark",
+                features: []
+              });
             }
           }}
           center={nowPn}
@@ -101,7 +107,7 @@ function Maps(props) {
             return changeShow()
           }}>
             {
-              showAll ? <img className="sh_img" src={big}/> : <img className="sh_img" src={small}/>
+              showAll ? <img className="sh_img" src={big} /> : <img className="sh_img" src={small} />
             }
           </div>
           {/* <Marker ref={markerRef} animation={2} position={{ lng: 121.411535, lat: 31.222965 }} /> */}
@@ -138,4 +144,4 @@ function Maps(props) {
   // return <Demo markerlist ={props?.marklist} />;
 }
 
-export default Maps;
+export default React.memo(Maps, areEqual);

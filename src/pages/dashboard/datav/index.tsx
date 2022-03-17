@@ -171,6 +171,8 @@ function Datav() {
   const [flag, setFlag] = useState(false)
   const [rows, setRows] = useState([])
   const [columns, setColumns] = useState([])
+  const [coltitle, setColTitle] = useState([])
+  const [chartType, setChartType] = useState("line")
 
   const fetchData = () => {
     setLoading(true);
@@ -201,7 +203,7 @@ function Datav() {
     //   interval.current = setInterval(fetchData, 6000);
     // }
 
-    // fetchData()
+    fetchData()
 
     // return () => clearInterval(interval.current)
 
@@ -234,12 +236,11 @@ function Datav() {
     let date2 = new Date(v.date[1]).getTime()
     console.log(date1,date2);
     let params = {
-      // deviceid:v.objectid,
-      
+      // deviceid:v.objectid
       starttime:date1,
       endtime:date2,
       style: 'line',
-      interval: '1m',
+      interval: '1h',
       keys: '*',
       function:'last'
       // where:[
@@ -252,26 +253,40 @@ function Datav() {
       url: `/datav/iotapi/echart/${v.objectid}`,
       params,
       headers:{
-        "sessionToken":"r:27191df83bb4a9fb0d4ecff96328648b" //
+        "sessionToken":"r:5145e6ddb2c87b779bb3249948ac7d86" //
       }
         // /datav/iotapi/big_screen  /mock/device/getproduct
     }).then(({chartData}) => {
-      // console.log(chartsData);
+      console.log(chartData);
       let xData =[]
       let yData =[]
+      let flag =true
       chartData.rows.forEach((item,index)=>{
-        item.forEach((element,i) => {
-          if(i==0){
-            xData.push(element)
-          }else{
-            yData[i-1].push(element)
+        let i = 0
+        // let ylist = []
+        if(flag){
+          for(let key in item){
+            console.log("值",key);
+            if(key!="日期")
+            yData.push([])
           }
-        });
+          flag =false
+        }
+        
+        for(let key in item){
+          if(i==0){
+            xData.push(item[key])
+          }else{
+            yData[i-1].push(item[key])
+          }
+          i++
+        }
       })
       console.log("历史数据",xData,yData);
-      
-      setRows(chartData.rows)
-      setRows(chartData.columns)
+      chartData.columns.splice(0,1)
+      setRows(xData)
+      setColumns(yData)
+      setColTitle(chartData.columns)
     })
   }
   //选择器
@@ -292,8 +307,17 @@ function Datav() {
     name:'太阳能板',
     objectid:'a4gnj15sa'
   }];
+  const types = [
+    {
+      name:'折线图',
+      type:'line'
+    },{
+      name:'柱状图',
+      type:'bar'
+    }
+  ]
   const [form] = Form.useForm();
-  if (!flag) {
+  if (flag) {
     return (
       <div className="datav">
         <div className="dv_top">
@@ -384,9 +408,29 @@ function Datav() {
                   <Select
                     style={{ width: '100%' }}
                     placeholder='选择设备'
+                    
                   >
                     {options.map((option, index) => (
                       <Option key={option.objectid}  value={option.objectid}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormItem>
+                <FormItem className="f_item"
+                 field='type'
+                >
+                  <Select
+                    style={{ width: '100%' }}
+                    placeholder='选择图表类型'
+                    defaultValue='line'
+                    onChange={(value)=>{
+                      setChartType(value)
+                     
+                    }}
+                  >
+                    {types.map((option, index) => (
+                      <Option key={option.type}   value={option.type}>
                         {option.name}
                       </Option>
                     ))}
@@ -406,9 +450,7 @@ function Datav() {
                 </FormItem>
                 <FormItem
                   className="f_item"
-                  wrapperCol={{
-                    offset: 5,
-                  }}
+                 
                 >
                   <Button htmlType='submit' type='primary' className="f_item_btn" >
                     搜索
@@ -417,7 +459,7 @@ function Datav() {
               </Form>
 
             </div>
-            <LineDiv option={option1} rows={rows} columns={columns} ></LineDiv>
+            <LineDiv chartType={chartType}  rows={rows} columns={columns} coltitle ={coltitle}></LineDiv>
           </div>
           <div className="ct_right">
             <div className="cright_top">
