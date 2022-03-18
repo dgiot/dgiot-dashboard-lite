@@ -111,5 +111,11 @@ function Pie(props) {
 
 
 }
+function areEqual(prevProps, newxProps) {
+  if (prevProps.devicelist == newxProps.devicelist) {
+    return true
+  }
+  return false
+}
 
-export default Pie;
+export default React.memo(Pie,areEqual);

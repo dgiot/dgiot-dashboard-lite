@@ -225,16 +225,8 @@ function Datav() {
       img: img3
     }
   ]
-  //选择头部类型
-  const handleIndex = (index) => {
-    setcurrentIndex(index)
-  }
-  //获取设备历史数据
-  const getHisData=(v)=>{
-    console.log(v);
-    let date1 = new Date(v.date[0]).getTime()
-    let date2 = new Date(v.date[1]).getTime()
-    console.log(date1,date2);
+  //获取图表数据
+  const getEcharts = (objectid,date1,date2)=>{
     let params = {
       // deviceid:v.objectid
       starttime:date1,
@@ -246,11 +238,9 @@ function Datav() {
       // where:[
       //   {"createdat": {"$gte": date1}},   
       //     {"createdat": {"$lte":date2}}]
-    }
-  
-
+    } 
     httpService.getClict({
-      url: `/datav/iotapi/echart/${v.objectid}`,
+      url: `/datav/iotapi/echart/${objectid}`,
       params,
       headers:{
         "sessionToken":"r:5145e6ddb2c87b779bb3249948ac7d86" //
@@ -272,7 +262,6 @@ function Datav() {
           }
           flag =false
         }
-        
         for(let key in item){
           if(i==0){
             xData.push(item[key])
@@ -288,6 +277,69 @@ function Datav() {
       setColumns(yData)
       setColTitle(chartData.columns)
     })
+  }
+  //选择头部类型
+  const handleIndex = (index) => {
+    setcurrentIndex(index)
+  }
+  //获取设备历史数据
+  const getHisData=(v)=>{
+    console.log(v);
+    let date1 = new Date(v.date[0]).getTime()
+    let date2 = new Date(v.date[1]).getTime()
+    getEcharts(v.objectid,date1,date2)
+    // console.log(date1,date2);
+    // let params = {
+    //   // deviceid:v.objectid
+    //   starttime:date1,
+    //   endtime:date2,
+    //   style: 'line',
+    //   interval: '1h',
+    //   keys: '*',
+    //   function:'last'
+    //   // where:[
+    //   //   {"createdat": {"$gte": date1}},   
+    //   //     {"createdat": {"$lte":date2}}]
+    // } 
+    // httpService.getClict({
+    //   url: `/datav/iotapi/echart/${v.objectid}`,
+    //   params,
+    //   headers:{
+    //     "sessionToken":"r:5145e6ddb2c87b779bb3249948ac7d86" //
+    //   }
+    //     // /datav/iotapi/big_screen  /mock/device/getproduct
+    // }).then(({chartData}) => {
+    //   console.log(chartData);
+    //   let xData =[]
+    //   let yData =[]
+    //   let flag =true
+    //   chartData.rows.forEach((item,index)=>{
+    //     let i = 0
+    //     // let ylist = []
+    //     if(flag){
+    //       for(let key in item){
+    //         console.log("值",key);
+    //         if(key!="日期")
+    //         yData.push([])
+    //       }
+    //       flag =false
+    //     }
+        
+    //     for(let key in item){
+    //       if(i==0){
+    //         xData.push(item[key])
+    //       }else{
+    //         yData[i-1].push(item[key])
+    //       }
+    //       i++
+    //     }
+    //   })
+    //   console.log("历史数据",xData,yData);
+    //   chartData.columns.splice(0,1)
+    //   setRows(xData)
+    //   setColumns(yData)
+    //   setColTitle(chartData.columns)
+    // })
   }
   //选择器
   const options = [{

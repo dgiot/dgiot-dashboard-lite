@@ -4,12 +4,7 @@ import { Map, Marker, InfoWindow, APILoader } from '@uiw/react-baidu-map';
 import "./style/maps.less"
 import big from "./img/map/放大.png";
 import small from "./img/map/缩小.png";
-function areEqual(prevProps, newxProps) {
-  if (prevProps.markerlist == newxProps.markerlist) {
-    return true
-  }
-  return false
-}
+
 function Maps(props) {
 
   // console.log("这是传参", props);
@@ -143,5 +138,10 @@ function Maps(props) {
   // }
   // return <Demo markerlist ={props?.marklist} />;
 }
-
+function areEqual(prevProps, newxProps) {
+  if (prevProps.markerlist == newxProps.markerlist) {
+    return true
+  }
+  return false
+}
 export default React.memo(Maps, areEqual);

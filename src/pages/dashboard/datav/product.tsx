@@ -45,5 +45,11 @@ function Product(props) {
   }
  
 }
+function areEqual(prevProps, newxProps) {
+  if (prevProps.list == newxProps.list) {
+    return true
+  }
+  return false
+}
 
-export default Product;
+export default React.memo(Product,areEqual) ;

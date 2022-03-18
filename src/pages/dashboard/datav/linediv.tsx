@@ -150,4 +150,13 @@ function LineDiv(props) {
 
 }
 
-export default LineDiv;
+function areEqual(prevProps, newxProps) {
+  if (prevProps.chartType == newxProps.chartType 
+    ||prevProps.rows == newxProps.rows 
+    ||prevProps.columns == newxProps.columns
+    ||prevProps.coltitle == newxProps.coltitle) {
+    return true
+  }
+  return false
+}
+export default React.memo(LineDiv,areEqual) ;
