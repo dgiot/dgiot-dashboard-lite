@@ -14,8 +14,16 @@ export const routes: Route[] = [
     key: 'dashboard',
     children: [
       {
-        name: 'menu.dashboard.workplace',
+        name: 'menu.dashboard.datav',
         key: 'dashboard/datav',
+      },
+      {
+        name: 'menu.dashboard.productlist',
+        key: 'dashboard/productlist',
+      },
+      {
+        name: 'menu.dashboard.devicelist',
+        key: 'dashboard/devicelist',
       },
       {
         name: 'menu.dashboard.monitor',
@@ -39,7 +47,7 @@ export const routes: Route[] = [
         ],
       },
       {
-        name: 'menu.dashboard.datav',
+        name: 'menu.dashboard.workplace',
         key: 'dashboard/workplace',
         requiredPermissions: [{ resource: 'menu.dashboard.datav', actions: ['write'] }],
       },

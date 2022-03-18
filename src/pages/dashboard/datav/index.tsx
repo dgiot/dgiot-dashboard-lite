@@ -8,34 +8,37 @@ import DeviceMap from './deviceMap'
 
 import Pie from "./pie";
 import LineDiv from './linediv'
-
+import { Switch, Route, Link, withRouter, useHistory } from 'react-router-dom';
 import {
   Form,
-  Input,
   Select,
   DatePicker,
   Button,
-  Message,
-  Grid,
+  Carousel
 } from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import "./style/index.less"
 import * as datav from '@jiaminghi/data-view-react';
 // import React from "react"
 import React, { useState, useEffect, useRef } from 'react'
+// import { useHistory } from "react-router-dom";
 // import axios from "axios";
-import { HttpService } from "@/utils/request";
+
 import { Loading } from 'element-react';
+import 'element-theme-default';
 
 import img1 from "./img/tleft/组 5350@2x(1).png";
 import img2 from "./img/tleft/组 5350@2x(2).png";
 import img3 from "./img/tleft/组 5350@2x(3).png";
-
+import img4 from "./img/tleft/产品.png";
+import { HttpService } from "@/utils/request";
 const httpService = new HttpService()
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 function Datav() {
+  const history = useHistory();
   function formatZero(num, len) {
     if (String(num).length > len) return num;
     return (Array(len).join("0") + num).slice(-len);
@@ -163,21 +166,35 @@ function Datav() {
   const [deviceList, setdeviceList] = useState([]);
   const [productList, setproductList] = useState([]);
   let interval = useRef(null)
+  let currentTime = useRef(null)
   const [loading, setLoading] = useState(false)
   const [currentIndex, setcurrentIndex] = useState(0)
   const [MarkerList, setMarkerList] = useState([])
   const [header, setHeader] = useState([])
   const [errorlist, setErrorList] = useState([])
   const [flag, setFlag] = useState(false)
+  // let [dvflag, setdvFlag] = useState(false)
+  let dvflag = false
   const [rows, setRows] = useState([])
   const [columns, setColumns] = useState([])
   const [coltitle, setColTitle] = useState([])
   const [chartType, setChartType] = useState("line")
+  const [options, setOptions] = useState([])
+  const [nowTime, setNowTime] = useState("")
+
+  // const defaultDevice = options[0];
+
+  const [device, setPickDevice] = useState("");
+  const [dvObjectid, setDvobjectId] = useState("");
+
 
   const fetchData = () => {
     setLoading(true);
     httpService.getClict({
-      url: '/iotapi/big_screen'  // /datav/iotapi/big_screen  /mock/device/getproduct
+      url: '/iotapi/big_screen', // /datav/iotapi/big_screen  /mock/device/getproduct
+      headers: {
+        "sessionToken": localStorage.getItem("sessionToken")//
+      }
     }).then(({ data }) => {
       console.log(data);
       // setData(res.data);
@@ -190,184 +207,173 @@ function Datav() {
       setMarkerList(data.deviceLocationRecords.records)
       setHeader(data.errorList.header) //告警台头
       setErrorList(data.errorList.data) //告警内容
+      setOptions(data.deviceStatusRecords.Records) //告警内容
+      setPickDevice(data.deviceStatusRecords.Records[14].name)
+      setDvobjectId(data.deviceStatusRecords.Records[14].objectid)
+      console.log("1111111", dvflag);
+
+      if (!dvflag) {
+        console.log("这是图表的初次渲染");
+        dvflag = true
+        let nowDate = new Date().getTime()
+        let lastDate = new Date().getTime() - 24 * 60 * 60 * 1000 * 7
+        getEcharts(data.deviceStatusRecords.Records[18].objectid, lastDate, nowDate)
+
+      }
+
+
     })
       .finally(() => {
         setLoading(false);
       });
   };
   useEffect(() => {
-    // if (interval) {
-    //   clearInterval(interval.current)
-    //   interval.current = setInterval(fetchData, 6000);
-    // } else {
-    //   interval.current = setInterval(fetchData, 6000);
-    // }
+    if (interval) {
+      clearInterval(interval.current)
+      interval.current = setInterval(fetchData, 6000);
+      // interval = setInterval(fetchData, 6000);
+    } else {
+      interval.current = setInterval(fetchData, 6000);
+    }
 
-    fetchData()
+    // fetchData()
 
-    // return () => clearInterval(interval.current)
+    return () => clearInterval(interval.current)
 
   }, []);
   const clickist = [
     {
       id: 1,
       name: "大屏展示",
-      img: img1
+      img: img1,
+      src:''
     },
     {
       id: 2,
-      name: "产业",
-      img: img2
+      name: "产品管理",
+      img: img4,
+      src:'/dashboard/productlist'
     },
     {
       id: 3,
-      name: "设备",
-      img: img3
+      name: "设备管理",
+      img: img3,
+      src:'/dashboard/devicelist'
     }
   ]
   //获取图表数据
-  const getEcharts = (objectid,date1,date2)=>{
+  const getEcharts = (objectid, date1, date2) => {
     let params = {
       // deviceid:v.objectid
-      starttime:date1,
-      endtime:date2,
+      starttime: date1,
+      endtime: date2,
       style: 'line',
       interval: '1h',
       keys: '*',
-      function:'last'
+      function: 'last'
       // where:[
       //   {"createdat": {"$gte": date1}},   
       //     {"createdat": {"$lte":date2}}]
-    } 
+    }
     httpService.getClict({
       url: `/datav/iotapi/echart/${objectid}`,
       params,
-      headers:{
-        "sessionToken":"r:5145e6ddb2c87b779bb3249948ac7d86" //
+      headers: {
+        "sessionToken": "r:2f2ca7e8899ac2efa2697194c853ac80" //
       }
-        // /datav/iotapi/big_screen  /mock/device/getproduct
-    }).then(({chartData}) => {
-      console.log(chartData);
-      let xData =[]
-      let yData =[]
-      let flag =true
-      chartData.rows.forEach((item,index)=>{
-        let i = 0
-        // let ylist = []
-        if(flag){
-          for(let key in item){
-            console.log("值",key);
-            if(key!="日期")
-            yData.push([])
-          }
-          flag =false
+      // /datav/iotapi/big_screen  /mock/device/getproduct
+    }).then(({ chartData }) => {
+      console.log("111", chartData);
+      let xData = []
+      let yData = []
+      let flag = true
+      if (chartData) {
+        if (chartData?.rows != []) {
+          chartData.rows.forEach((item, index) => {
+            let i = 0
+            // let ylist = []
+            if (flag) {
+              for (let key in item) {
+                console.log("值", key);
+                if (key != "日期")
+                  yData.push([])
+              }
+              flag = false
+            }
+            for (let key in item) {
+              if (i == 0) {
+                xData.push(item[key])
+              } else {
+                yData[i - 1].push(item[key])
+              }
+              i++
+            }
+          })
+          console.log("历史数据", xData, yData);
+          chartData.columns.splice(0, 1)
+          setRows(xData)
+          setColumns(yData)
+          setColTitle(chartData.columns)
         }
-        for(let key in item){
-          if(i==0){
-            xData.push(item[key])
-          }else{
-            yData[i-1].push(item[key])
-          }
-          i++
-        }
-      })
-      console.log("历史数据",xData,yData);
-      chartData.columns.splice(0,1)
-      setRows(xData)
-      setColumns(yData)
-      setColTitle(chartData.columns)
+      }
+      else {
+        setRows([])
+        setColumns([])
+        setColTitle([])
+      }
+
+
     })
   }
   //选择头部类型
-  const handleIndex = (index) => {
+  const handleIndex = (index,item) => {
     setcurrentIndex(index)
+   if(index!=0)
+    history.push(item.src);
   }
   //获取设备历史数据
-  const getHisData=(v)=>{
+  const getHisData = (v) => {
     console.log(v);
     let date1 = new Date(v.date[0]).getTime()
     let date2 = new Date(v.date[1]).getTime()
-    getEcharts(v.objectid,date1,date2)
-    // console.log(date1,date2);
-    // let params = {
-    //   // deviceid:v.objectid
-    //   starttime:date1,
-    //   endtime:date2,
-    //   style: 'line',
-    //   interval: '1h',
-    //   keys: '*',
-    //   function:'last'
-    //   // where:[
-    //   //   {"createdat": {"$gte": date1}},   
-    //   //     {"createdat": {"$lte":date2}}]
-    // } 
-    // httpService.getClict({
-    //   url: `/datav/iotapi/echart/${v.objectid}`,
-    //   params,
-    //   headers:{
-    //     "sessionToken":"r:5145e6ddb2c87b779bb3249948ac7d86" //
-    //   }
-    //     // /datav/iotapi/big_screen  /mock/device/getproduct
-    // }).then(({chartData}) => {
-    //   console.log(chartData);
-    //   let xData =[]
-    //   let yData =[]
-    //   let flag =true
-    //   chartData.rows.forEach((item,index)=>{
-    //     let i = 0
-    //     // let ylist = []
-    //     if(flag){
-    //       for(let key in item){
-    //         console.log("值",key);
-    //         if(key!="日期")
-    //         yData.push([])
-    //       }
-    //       flag =false
-    //     }
-        
-    //     for(let key in item){
-    //       if(i==0){
-    //         xData.push(item[key])
-    //       }else{
-    //         yData[i-1].push(item[key])
-    //       }
-    //       i++
-    //     }
-    //   })
-    //   console.log("历史数据",xData,yData);
-    //   chartData.columns.splice(0,1)
-    //   setRows(xData)
-    //   setColumns(yData)
-    //   setColTitle(chartData.columns)
-    // })
+    getEcharts(v.objectid, date1, date2)
+   
   }
   //选择器
-  const options = [{
-    deviceStatus:"offline",
-    name:'水泵',
-    objectid:'791da07d16'
-  },{
-    deviceStatus:"online",
-    name:'电表',
-    objectid:'afa15a2'
-  },{
-    deviceStatus:"offline",
-    name:'水表',
-    objectid:'fa56faf3'
-  },{
-    deviceStatus:"offline",
-    name:'太阳能板',
-    objectid:'a4gnj15sa'
-  }];
   const types = [
     {
-      name:'折线图',
-      type:'line'
-    },{
-      name:'柱状图',
-      type:'bar'
+      name: '折线图',
+      type: 'line'
+    }, {
+      name: '柱状图',
+      type: 'bar'
     }
   ]
+  //图片轮播地址
+  const imageSrc = [
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/cd7a1aaea8e1c5e3d26fe2591e561798.png~tplv-uwbnlip3yd-webp.webp',
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/6480dbc69be1b5de95010289787d64f1.png~tplv-uwbnlip3yd-webp.webp',
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/0265a04fddbd77a19602a15d9d55d797.png~tplv-uwbnlip3yd-webp.webp',
+    '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/24e0dd27418d2291b65db1b21aa62254.png~tplv-uwbnlip3yd-webp.webp'
+  ];
+  const getNow = () => {
+    //获取当前时间并打印
+    var _this = this
+    let yy = new Date().getFullYear()
+    let mm = new Date().getMonth() + 1
+    let dd = new Date().getDate()
+    let hh = new Date().getHours()
+    let mf =
+      new Date().getMinutes() < 10
+        ? '0' + new Date().getMinutes()
+        : new Date().getMinutes()
+    let ss =
+      new Date().getSeconds() < 10
+        ? '0' + new Date().getSeconds()
+        : new Date().getSeconds()
+    setNowTime(yy + '/' + mm + '/' + dd + ' ' + hh + ':' + mf + ':' + ss)
+    // return yy + '/' + mm + '/' + dd + ' ' + hh + ':' + mf + ':' + ss
+  }
   const [form] = Form.useForm();
   if (flag) {
     return (
@@ -380,7 +386,10 @@ function Datav() {
                   <div
                     className={["left_item", index === currentIndex ? "active" : null].join(' ')}
                     onClick={() => {
-                      return handleIndex(index)
+                      return handleIndex(index,item)
+                     
+                      // history.push('/dashboard/monitor');
+
                     }}
                   >
                     <img className="iteminfo img" src={item.img} />
@@ -397,7 +406,12 @@ function Datav() {
         <div className="dv_content">
           <div className="ct_left">
             <div className="cleft_top">
-              <div className="lt_title"></div>
+              <div className="lt_title">
+              <div className='title_left'>
+                  <img className='left_img left_tol' src={img1} alt="" />
+                  <span className='left_name left_tol'>设备状况</span>
+                </div>
+              </div>
               <div className='dvItem'>
                 <div className='dvitem_name'>
                   设备总数
@@ -446,53 +460,52 @@ function Datav() {
           <div className="ct_center">
             <Maps marklist={MarkerList}></Maps>
             <div className='ctr_search'>
-              <Form 
-              form={form}
-              style={{ width: '100%' }}
-              onSubmit={(v) => {
-                return getHisData(v)
-              }}
-              className="f_wrap">
+              <Form
+                form={form}
+                style={{ width: '100%' }}
+                onSubmit={(v) => {
+                  return getHisData(v)
+                }}
+                className="f_wrap">
                 <FormItem className="f_item"
-                 field='objectid'
-                 rules={[{ required: true, message: '请选择设备' }]}
+                  field='objectid'
+                  rules={[{ required: true, message: '请选择设备' }]}
                 >
                   <Select
                     style={{ width: '100%' }}
                     placeholder='选择设备'
-                    
+                    defaultValue={options[0]}
                   >
                     {options.map((option, index) => (
-                      <Option key={option.objectid}  value={option.objectid}>
+                      <Option key={option.objectid} value={option.objectid}>
                         {option.name}
                       </Option>
                     ))}
                   </Select>
                 </FormItem>
                 <FormItem className="f_item"
-                 field='type'
+                  field='type'
                 >
                   <Select
                     style={{ width: '100%' }}
                     placeholder='选择图表类型'
-                    defaultValue='line'
-                    onChange={(value)=>{
+                    defaultValue={chartType}
+                    onChange={(value) => {
                       setChartType(value)
-                     
                     }}
                   >
                     {types.map((option, index) => (
-                      <Option key={option.type}   value={option.type}>
+                      <Option key={index} value={option.type}>
                         {option.name}
                       </Option>
                     ))}
                   </Select>
                 </FormItem>
-                <FormItem 
-                className="f_item2"
-                style={{color:'#fff'}}
-                field='date'
-                rules={[{ required: true, message: '请选择时间' }]}
+                <FormItem
+                  className="f_item2"
+                  style={{ color: '#fff' }}
+                  field='date'
+                  rules={[{ required: true, message: '请选择时间' }]}
                 >
                   <DatePicker.RangePicker
                     format='YYYY-MM-DD HH:mm:ss'
@@ -502,7 +515,7 @@ function Datav() {
                 </FormItem>
                 <FormItem
                   className="f_item"
-                 
+
                 >
                   <Button htmlType='submit' type='primary' className="f_item_btn" >
                     搜索
@@ -511,16 +524,40 @@ function Datav() {
               </Form>
 
             </div>
-            <LineDiv chartType={chartType}  rows={rows} columns={columns} coltitle ={coltitle}></LineDiv>
+            <LineDiv chartType={chartType} rows={rows} columns={columns} coltitle={coltitle}></LineDiv>
           </div>
           <div className="ct_right">
             <div className="cright_top">
-              <div className="rt_title"></div>
+              <div className="rt_title">
+                <div className='title_left'>
+                  <span className='left_name left_tol'>告警列表</span>
+                  <img className='left_img left_tol' src={img3} alt="" />
+                </div>
+              </div>
               <Scroll header={header} scrollData={errorlist} ></Scroll>
             </div>
             <div className="cright_bottom">
-              <div className="rt_title"></div>
-              <View></View>
+              <div className="rt_title">
+              <div className='title_left'>
+                  <span className='left_name left_tol'>视频分区</span>
+                  <img className='left_img left_tol' src={img2} alt="" />
+                </div>
+              </div>
+              <Carousel
+                className="rt_content"
+                autoPlay={true}
+              >
+                {imageSrc.map((src, index) => (
+                  <div key={index}>
+                    <img
+                      src={src}
+                      style={{
+                        width: '100%',
+                      }}
+                    />
+                  </div>
+                ))}
+              </Carousel>
             </div>
           </div>
         </div>

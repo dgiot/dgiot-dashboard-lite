@@ -54,7 +54,7 @@ function Maps(props) {
               // 启用滚轮放大缩小，默认禁用
               props.map.enableScrollWheelZoom();
               props.map.setMapStyle({
-                style: "dark",
+                style: "light",
                 features: []
               });
             }
@@ -139,9 +139,15 @@ function Maps(props) {
   // return <Demo markerlist ={props?.marklist} />;
 }
 function areEqual(prevProps, newxProps) {
-  if (prevProps.markerlist == newxProps.markerlist) {
-    return true
+  console.log(prevProps.marklist);
+  if (prevProps.marklist == undefined) {
+    return false;
+  } else {
+    if (JSON.stringify(prevProps.marklist[0]) === JSON.stringify(newxProps.marklist[0])) {
+      return true
+    }
+    return false
   }
-  return false
+
 }
 export default React.memo(Maps, areEqual);

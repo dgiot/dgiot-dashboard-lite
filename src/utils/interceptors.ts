@@ -1,11 +1,11 @@
 import axios from 'axios';
 // import {message} from 'ant-design-vue'; // 这是我引入的antd的组件库,为了方便弹出吐司
 import axiosRetry from 'axios-retry';
-
+import { withRouter  } from "react-router-dom";
+// const history = new withRouter()
 axiosRetry(axios, { retries: 3 });
 export class Interceptors {
   public instance: any;
-
   constructor() {
     // 创建axios实例
     this.instance = axios.create({ timeout: 1000 * 12 });
@@ -33,13 +33,15 @@ export class Interceptors {
         // }
         config.headers['Conetent-type'] = "application/json";
         const token = localStorage.getItem('sessionToken');
-        if (token) {
-          config.headers['sessionToken'] = token;
-        }
+        // if (token) {
+        //   config.headers['sessionToken'] = token;
+        // }
 
         return config;
       },
       (error) => {
+        // console.log("111",error);
+        
         console.log(error);
       },
     );
@@ -60,6 +62,7 @@ export class Interceptors {
         if (res.status === 200) {
           return Promise.resolve(res.data);
         } else {
+          
           this.errorHandle(res);
           return Promise.reject(res.data);
         }
@@ -67,6 +70,11 @@ export class Interceptors {
       // 请求失败
       (error) => {
         const { response } = error;
+        console.log("111",response);
+        if(response.status==401){
+          // history.push('/login')
+          location.href='/login'
+        }
         if (response) {
           // 请求已发出，但是不在2xx的范围
           this.errorHandle(response);

@@ -9,7 +9,7 @@ import * as echarts from 'echarts';
 // import styles from './Echarts.module.less'
 // 原文链接：https://blog.csdn.net/weixin_45582052/article/details/105164153
 function LineDiv(props) {
-  console.log("折线",props);
+  // console.log("折线",props);
   
   let { columns } = props
   const [chartInstance, setChartInstance] = useState(null);
@@ -20,7 +20,7 @@ function LineDiv(props) {
     if(columns){
      
       columns.forEach((element,index)=>{
-        console.log("数据",element);
+        // console.log("数据",element);
         
         let col =  {
           name: props.coltitle[index],
@@ -159,4 +159,4 @@ function areEqual(prevProps, newxProps) {
   }
   return false
 }
-export default React.memo(LineDiv,areEqual) ;
+export default LineDiv ;
