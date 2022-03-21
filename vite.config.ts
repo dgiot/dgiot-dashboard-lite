@@ -22,30 +22,30 @@ export default defineConfig({
       },
       // 使用 proxy 实例
       '/iotapi': {
-        target:   'http://192.168.2.6:5080',  //'http://124.222.232.146'  , //'http://dev.iotn2n.com',
+        target: 'http://192.168.2.12:5080',  //'http://124.222.232.146'  , //'http://dev.iotn2n.com',
         changeOrigin: true,
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
         },
       },
-       // 使用 proxy 实例
-       '/datav': {
+      // 使用 proxy 实例
+      '/datav': {
         target: 'http://124.222.232.146',  //http://192.168.2.6:5080
         changeOrigin: true,
-        rewrite:(path) => path.replace(/\/datav/, ''),
+        rewrite: (path) => path.replace(/\/datav/, ''),
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
         },
-        
+
       },
       '/mock': {
         target: 'https://datav.usemock.com',
         changeOrigin: true,
-        rewrite:(path) => path.replace(/\/mock/, ''),
+        rewrite: (path) => path.replace(/\/mock/, ''),
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
         },
-        
+
       },
       // Proxying websockets or socket.io
       '/socket.io': {
@@ -56,6 +56,26 @@ export default defineConfig({
   },
   resolve: {
     alias: [{ find: '@', replacement: '/src' }],
+  },
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+    postcss: {
+      plugins: [
+        {
+          postcssPlugin: 'internal:charset-removal',
+          AtRule: {
+            charset: (atRule) => {
+              if (atRule.name === 'charset')
+                atRule.remove();
+            }
+          }
+        }
+      ]
+    }
   },
   plugins: [
     react(),
@@ -69,12 +89,4 @@ export default defineConfig({
       },
     }),
   ],
-  css: {
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
-      },
-    },
-  },
-  
 });
