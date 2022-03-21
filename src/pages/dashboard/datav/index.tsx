@@ -27,10 +27,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Loading } from 'element-react';
 import 'element-theme-default';
 
-import img1 from "@/assets/datav/img/tleft/组 5350@2x(1).png";
-import img2 from "@/assets/datav/img/tleft/组 5350@2x(2).png";
-import img3 from "@/assets/datav/img/tleft/组 5350@2x(3).png";
-import img4 from "@/assets/datav/img/tleft/产品.png";
+import img1 from "@/assets/datav/img/tleft/zu1.png";
+import img2 from "@/assets/datav/img/tleft/zu2.png";
+import img3 from "@/assets/datav/img/tleft/zu3.png";
+import img4 from "@/assets/datav/img/tleft/product.png";
 import { HttpService } from "@/utils/request";
 const httpService = new HttpService()
 
@@ -391,8 +391,6 @@ function Datav() {
                     className={["left_item", index === currentIndex ? "active" : null].join(' ')}
                     onClick={() => {
                       return handleIndex(index,item)
-                     
-                      // history.push('/dashboard/monitor');
 
                     }}
                   >

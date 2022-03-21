@@ -2,8 +2,8 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import { Map, Marker, InfoWindow, APILoader } from '@uiw/react-baidu-map';
 import "./style/maps.less"
-import big from "@/assets/datav/img/map/放大.png";
-import small from "@/assets/datav/img/map/缩小.png";
+import big from "@/assets/datav/img/map/big.png";
+import small from "@/assets/datav/img/map/small.png";
 
 function Maps(props) {
 
