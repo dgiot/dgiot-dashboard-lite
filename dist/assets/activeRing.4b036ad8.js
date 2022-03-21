@@ -1,0 +1,1 @@
+import{j as t}from"./vendor.ed5b4e33.js";import{A as o}from"./index.05a5fd49.js";function r(i){return console.log("\u8F93\u51FA",i),t(o,{config:i.config,style:{width:"100%",height:"300px"}})}export{r as default};

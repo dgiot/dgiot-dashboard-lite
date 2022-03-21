@@ -18,10 +18,10 @@ export const routes: Route[] = [
         key: 'dashboard/datav',
         // hidden: 'true'
       },
-      {
-        name: 'menu.dashboard.productlist',
-        key: 'dashboard/productlist',
-      },
+      // {
+      //   name: 'menu.dashboard.productlist',
+      //   key: 'dashboard/productlist',
+      // },
       {
         name: 'menu.dashboard.devicelist',
         key: 'dashboard/devicelist',
