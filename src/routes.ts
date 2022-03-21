@@ -16,6 +16,7 @@ export const routes: Route[] = [
       {
         name: 'menu.dashboard.datav',
         key: 'dashboard/datav',
+        // hidden: 'true'
       },
       {
         name: 'menu.dashboard.productlist',

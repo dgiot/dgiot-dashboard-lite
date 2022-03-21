@@ -33,9 +33,9 @@ export class Interceptors {
         // }
         config.headers['Conetent-type'] = "application/json";
         const token = localStorage.getItem('sessionToken');
-        // if (token) {
-        //   config.headers['sessionToken'] = token;
-        // }
+        if (token) {
+          config.headers['sessionToken'] = token;
+        }
 
         return config;
       },

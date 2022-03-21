@@ -192,9 +192,9 @@ function Datav() {
     setLoading(true);
     httpService.getClict({
       url: '/iotapi/big_screen', // /datav/iotapi/big_screen  /mock/device/getproduct
-      headers: {
-        "sessionToken": localStorage.getItem("sessionToken")//
-      }
+      // headers: {
+      //   "sessionToken": localStorage.getItem("sessionToken")//
+      // }
     }).then(({ data }) => {
       console.log(data);
       // setData(res.data);
@@ -208,9 +208,9 @@ function Datav() {
       setHeader(data.errorList.header) //告警台头
       setErrorList(data.errorList.data) //告警内容
       setOptions(data.deviceStatusRecords.Records) //告警内容
-      setPickDevice(data.deviceStatusRecords.Records[14].name)
-      setDvobjectId(data.deviceStatusRecords.Records[14].objectid)
-      console.log("1111111", dvflag);
+      setPickDevice(data.deviceStatusRecords.Records[0].name)
+      setDvobjectId(data.deviceStatusRecords.Records[0].objectid)
+      // console.log("1111111", dvflag);
 
       if (!dvflag) {
         console.log("这是图表的初次渲染");
@@ -276,14 +276,14 @@ function Datav() {
       //     {"createdat": {"$lte":date2}}]
     }
     httpService.getClict({
-      url: `/datav/iotapi/echart/${objectid}`,
+      url: `/iotapi/echart/${objectid}`, ///datav
       params,
-      headers: {
-        "sessionToken": "r:2f2ca7e8899ac2efa2697194c853ac80" //
-      }
+      // headers: {
+      //   "sessionToken": "r:2f2ca7e8899ac2efa2697194c853ac80" //
+      // }
       // /datav/iotapi/big_screen  /mock/device/getproduct
     }).then(({ chartData }) => {
-      console.log("111", chartData);
+      // console.log("111", chartData);
       let xData = []
       let yData = []
       let flag = true
@@ -314,6 +314,10 @@ function Datav() {
           setRows(xData)
           setColumns(yData)
           setColTitle(chartData.columns)
+        }else{
+            setRows([])
+            setColumns([])
+            setColTitle([])
         }
       }
       else {

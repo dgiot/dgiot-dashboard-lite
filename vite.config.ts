@@ -22,7 +22,7 @@ export default defineConfig({
       },
       // 使用 proxy 实例
       '/iotapi': {
-        target:   'http://124.222.232.146',  //'http://124.222.232.146'  , //'http://dev.iotn2n.com',
+        target:   'http://192.168.2.6:5080',  //'http://124.222.232.146'  , //'http://dev.iotn2n.com',
         changeOrigin: true,
         configure: (proxy, options) => {
           // proxy 是 'http-proxy' 的实例
