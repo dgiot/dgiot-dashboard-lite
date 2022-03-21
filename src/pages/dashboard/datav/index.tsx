@@ -27,10 +27,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Loading } from 'element-react';
 import 'element-theme-default';
 
-import img1 from "./img/tleft/组 5350@2x(1).png";
-import img2 from "./img/tleft/组 5350@2x(2).png";
-import img3 from "./img/tleft/组 5350@2x(3).png";
-import img4 from "./img/tleft/产品.png";
+import img1 from "@/assets/datav/img/tleft/组 5350@2x(1).png";
+import img2 from "@/assets/datav/img/tleft/组 5350@2x(2).png";
+import img3 from "@/assets/datav/img/tleft/组 5350@2x(3).png";
+import img4 from "@/assets/datav/img/tleft/产品.png";
 import { HttpService } from "@/utils/request";
 const httpService = new HttpService()
 

@@ -14,6 +14,9 @@ import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
+
+
+
 import Cookies from 'js-cookie';
 window.dgiotStore = Cookies;
 export default function LoginForm() {
@@ -53,7 +56,7 @@ export default function LoginForm() {
   function login(params) {
     setErrorMessage('');
     setLoading(true);
-    if (process.env.NODE_ENV === 'development') {
+    // if (process.env.NODE_ENV === 'development') {
       axios
         .post(
           '/iotapi/login',
@@ -78,9 +81,9 @@ export default function LoginForm() {
         .finally(() => {
           setLoading(false);
         });
-    } else {
-      afterLoginSuccess(params, params);
-    }
+    // } else {
+    //   afterLoginSuccess(params, params);
+    // }
   }
 
   function onSubmitClick() {

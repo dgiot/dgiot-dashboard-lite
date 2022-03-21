@@ -8,7 +8,8 @@ export class Interceptors {
   public instance: any;
   constructor() {
     // 创建axios实例
-    this.instance = axios.create({ timeout: 1000 * 12 });
+    this.instance = axios.create({ 
+      timeout: 1000 * 12 });
     axiosRetry(this.instance, { retries: 3 });
     // 初始化拦截器
     this.initInterceptors();
@@ -36,7 +37,6 @@ export class Interceptors {
         if (token) {
           config.headers['sessionToken'] = token;
         }
-
         return config;
       },
       (error) => {
