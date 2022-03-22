@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Input, Button, Table, Loading } from 'element-react';
+import { Input, Pagination, Button, Table, Loading } from 'element-react';
 import 'element-theme-default';
 import styles from './style/index.module.less';
 import "./style/index.less"
@@ -13,6 +13,7 @@ function ProductList() {
   const [skip, setSkip] = useState(0); //当前页数
   const [total, setTotal] = useState(1); //当前页数
   const [productList, setproductList] = useState([]); //当前页数
+  const [pageSize, setPageSize] = useState(10); //当前页数
   const state = {
     columns: [
       {
@@ -21,7 +22,7 @@ function ProductList() {
         width: 200,
         align: "center",
         sortable: true,
-        className:'tb_rows'
+        className: 'tb_rows'
       },
       {
         label: "产品名称",
@@ -29,7 +30,7 @@ function ProductList() {
         width: 200,
         align: "center",
         sortable: true,
-        className:'tb_rows'
+        className: 'tb_rows'
       },
       {
         label: "节点类型",
@@ -37,13 +38,13 @@ function ProductList() {
         width: 200,
         align: "center",
         sortable: true,
-        className:'tb_rows',
-        render:(props)=>{
+        className: 'tb_rows',
+        render: (props) => {
           return <span>
             {
-              props.nodeType==0?'网关子设备':props.nodeType==1?'网关设备':props.nodeType==2?'网关分组设备':'直连设备'
+              props.nodeType == 0 ? '网关子设备' : props.nodeType == 1 ? '网关设备' : props.nodeType == 2 ? '网关分组设备' : '直连设备'
             }
-           
+
           </span>
         }
       },
@@ -53,7 +54,7 @@ function ProductList() {
         width: 200,
         align: "center",
         sortable: true,
-        className:'tb_rows'
+        className: 'tb_rows'
       },
       {
         label: "添加时间",
@@ -61,7 +62,7 @@ function ProductList() {
         width: 200,
         align: "center",
         sortable: true,
-        className:'tb_rows'
+        className: 'tb_rows'
       },
       {
         label: "操作",
@@ -69,7 +70,7 @@ function ProductList() {
         fixed: 'right',
         width: 550,
         align: "center",
-        className:'tb_rows',
+        className: 'tb_rows',
         render: () => {
           return (
             <span>
@@ -83,39 +84,46 @@ function ProductList() {
         }
       }
     ],
+
   }
-    //世界时间转为北京时间
-    function utc2beijing(utc_datetime) {
-      // 转为正常的时间格式 年-月-日 时:分:秒
-      var date = new Date(+new Date(utc_datetime) + 8 * 3600 * 1000)
-        .toISOString()
-        .replace(/T/g, ' ')
-        .replace(/\.[\d]{3}Z/, '')
-      return date // 2017-03-31 16:02:06
-    }
+  //世界时间转为北京时间
+  function utc2beijing(utc_datetime) {
+    // 转为正常的时间格式 年-月-日 时:分:秒
+    var date = new Date(+new Date(utc_datetime) + 8 * 3600 * 1000)
+      .toISOString()
+      .replace(/T/g, ' ')
+      .replace(/\.[\d]{3}Z/, '')
+    return date // 2017-03-31 16:02:06
+  }
   const fetchData = () => {
     httpService.getClict({
       url: '/iotapi/classes/Product',
       params: {
         count: "objectId",
         order: "-updatedAt",
-        limit: 10,
+        limit: pageSize,
         skip,
         include: "category,producttemplet",
         where: { "name": { "$ne": null } }
       },
-      headers: {
-        "sessionToken": localStorage.getItem('sessionToken')
-      }
-    }).then(({count,results}) => {
+      // headers: {
+      //   "sessionToken": localStorage.getItem('sessionToken')
+      // }
+    }).then(({ count, results }) => {
       console.log(count);
       setTotal(count)
       let list = []
-      results.forEach((element,index)=>{
+      results.forEach((element, index) => {
         element.createdAt = utc2beijing(element.createdAt)
       })
       setproductList(results)
     })
+  }
+  //修改页面大小
+  const changePageSize =(value)=>{
+    setPageSize(value)
+    console.log(pageSize);
+    
   }
   useEffect(() => {
     fetchData()
@@ -135,7 +143,15 @@ function ProductList() {
           data={productList}
           stripe={true}
           border={true}
-          max-height={500}
+          max-height={450}
+        />
+      </div>
+      <div className={styles.pdt_bottom}>
+        <Pagination layout="total, sizes, prev, pager, next, jumper" total={total} pageSizes={[10, 20, 50, 100]} pageSize={pageSize} currentPage={5}
+        onSizeChange={(value)=>{
+          return changePageSize(value)
+          
+        }}
         />
       </div>
     </div>
