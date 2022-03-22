@@ -13,7 +13,10 @@ function ProductList() {
   const [skip, setSkip] = useState(0); //当前页数
   const [total, setTotal] = useState(1); //当前页数
   const [productList, setproductList] = useState([]); //当前页数
+  const [loading, setLoading] = useState(false); //当前页数
   const [pageSize, setPageSize] = useState(10); //当前页数
+  const [currentPage, setCurrentPage] = useState(1); //当前页数
+  let [value, setsearchValue] = useState("1111"); //当前页数
   const state = {
     columns: [
       {
@@ -84,7 +87,7 @@ function ProductList() {
         }
       }
     ],
-
+    value:"1111"
   }
   //世界时间转为北京时间
   function utc2beijing(utc_datetime) {
@@ -95,14 +98,15 @@ function ProductList() {
       .replace(/\.[\d]{3}Z/, '')
     return date // 2017-03-31 16:02:06
   }
-  const fetchData = () => {
+  const fetchData = (pagesize,skip0) => {
+    setLoading(true)
     httpService.getClict({
       url: '/iotapi/classes/Product',
       params: {
         count: "objectId",
         order: "-updatedAt",
-        limit: pageSize,
-        skip,
+        limit:pagesize,
+        skip:skip0,
         include: "category,producttemplet",
         where: { "name": { "$ne": null } }
       },
@@ -112,6 +116,7 @@ function ProductList() {
     }).then(({ count, results }) => {
       console.log(count);
       setTotal(count)
+      setLoading(false)
       let list = []
       results.forEach((element, index) => {
         element.createdAt = utc2beijing(element.createdAt)
@@ -121,36 +126,56 @@ function ProductList() {
   }
   //修改页面大小
   const changePageSize =(value)=>{
+    // state.pageSize = value
     setPageSize(value)
-    console.log(pageSize);
+    setSkip(0)
+    setCurrentPage(1)
+    fetchData(value,0)
     
   }
+ const changecurrentPage = (value)=>{
+   console.log(value);
+   setCurrentPage(value)
+   setSkip(pageSize*(value-1))
+  //  state.currentPage = value
+   fetchData(pageSize,pageSize*(value-1))
+  }
   useEffect(() => {
-    fetchData()
+    fetchData(pageSize,skip)
   }, []);
   return (
     <div className={styles.productList}>
       <div className={styles.product_top}>
-        <input className={styles.topInput} placeholder="请输入产品名称搜索" />
+        <Input className={styles.pdtopInput}  value={value} 
+        onIconClick={
+          ()=>{
+            setsearchValue("")
+          }
+        }
+        icon="circle-close" placeholder="请输入产品名称搜索" />
         <Button className={styles.topItem} type="primary" icon="search">搜索</Button>
         <Button className={styles.topItem} type="primary" icon="plus">创建产品</Button>
         <Button className={styles.topItem} type="primary" >导出产品</Button>
         <Button className={styles.topItem} type="primary" >导入产品</Button>
       </div>
       <div className={styles.pdt_content}>
+      <Loading loading={loading}>
         <Table
           columns={state.columns}
           data={productList}
           stripe={true}
           border={true}
-          max-height={450}
+          maxHeight={550}
         />
+        </Loading>
       </div>
       <div className={styles.pdt_bottom}>
-        <Pagination layout="total, sizes, prev, pager, next, jumper" total={total} pageSizes={[10, 20, 50, 100]} pageSize={pageSize} currentPage={5}
+        <Pagination layout="total, sizes, prev, pager, next, jumper" total={total} pageSizes={[10, 20, 50, 100]} pageSize={pageSize} currentPage={currentPage}
         onSizeChange={(value)=>{
           return changePageSize(value)
-          
+        }}
+        onCurrentChange={(value)=>{
+          return changecurrentPage(value)
         }}
         />
       </div>

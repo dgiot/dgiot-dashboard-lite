@@ -95,13 +95,13 @@ function DeviceList() {
       .replace(/\.[\d]{3}Z/, '')
     return date // 2017-03-31 16:02:06
   }
-  const fetchData = () => {
+  const fetchData = (pagesize) => {
     httpService.getClict({
       url: '/iotapi/classes/Product',
       params: {
         count: "objectId",
         order: "-updatedAt",
-        limit: pageSize,
+        limit: pagesize,
         skip,
         include: "category,producttemplet",
         where: { "name": { "$ne": null } }
@@ -122,11 +122,11 @@ function DeviceList() {
   //修改页面大小
   const changePageSize =(value)=>{
     setPageSize(value)
-    console.log(pageSize);
+    fetchData(value)
     
   }
   useEffect(() => {
-    fetchData()
+    fetchData(pageSize)
   }, []);
   return (
     <div className={styles.deviceList}>
