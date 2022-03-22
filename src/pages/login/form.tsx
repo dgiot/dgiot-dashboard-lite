@@ -68,7 +68,7 @@ export default function LoginForm() {
         )
         .then((res) => {
           const { access_token,sessionToken } = res.data;
-          console.log(res);
+          console.log("登录",res);
           // return 
           if (sessionToken) {
             // 记录登录状态

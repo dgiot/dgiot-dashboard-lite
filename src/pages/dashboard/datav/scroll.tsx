@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, ReactNode } from 'react';
 import * as datav from '@jiaminghi/data-view-react';
-import { Loading } from 'element-react';
+// import { Loading } from 'element-react';
   // const config1 ={
   //   header: [],
   //   data:[],
@@ -20,12 +20,13 @@ import { Loading } from 'element-react';
         align: ['center']
       }
       return <datav.ScrollBoard  config={config} style={{ width: '100%', height: '400px'}} />
-    }else{
+    }
+    else{
       return (
         <div>
-          <Loading  style={{backgroundColor: 'rgba(0, 200, 200, 0.8)'}} text="拼命加载中"  >
+          {/* <Loading  style={{backgroundColor: 'rgba(0, 200, 200, 0.8)'}} text="拼命加载中"  >
           <div style={{width:'100%',height:'100%'}}></div>
-        </Loading>
+        </Loading> */}
         </div>
       )
     }

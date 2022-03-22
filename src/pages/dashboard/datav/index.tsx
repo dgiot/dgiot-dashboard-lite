@@ -14,7 +14,8 @@ import {
   Select,
   DatePicker,
   Button,
-  Carousel
+  Carousel,
+  Spin
 } from '@arco-design/web-react';
 import styles from "./style/index.module.less";
 import "./style/index.less"
@@ -24,8 +25,6 @@ import React, { useState, useEffect, useRef } from 'react'
 // import { useHistory } from "react-router-dom";
 // import axios from "axios";
 
-import { Loading } from 'element-react';
-import 'element-theme-default';
 
 import img1 from "@/assets/datav/img/tleft/zu1.png";
 import img2 from "@/assets/datav/img/tleft/zu2.png";
@@ -531,7 +530,7 @@ function Datav() {
           <div className="ct_right">
             <div className="cright_top">
               <div className="rt_title">
-                <div className='title_left'>
+                <div className='title_left title_right'>
                   <span className='left_name left_tol'>告警列表</span>
                   <img className='left_img left_tol' src={img3} alt="" />
                 </div>
@@ -540,7 +539,7 @@ function Datav() {
             </div>
             <div className="cright_bottom">
               <div className="rt_title">
-              <div className='title_left'>
+              <div className='title_left title_right'>
                   <span className='left_name left_tol'>视频分区</span>
                   <img className='left_img left_tol' src={img2} alt="" />
                 </div>
@@ -568,72 +567,12 @@ function Datav() {
   } else {
     return (
       <div className={styles.datav}>
-        <Loading style={{ backgroundColor: 'rgba(0, 200, 200, 0.8)' }} text="拼命加载中" className={styles.loading}>
-          <div style={{ width: '100%', height: '100vh' }}></div>
-        </Loading>
+        <Spin style={{ backgroundColor: 'rgba(0, 200, 200, 0.8)' }} tip="拼命加载中" loading="true" className={styles.loading}>
+          <div style={{ width: '100%', height: '100vh' }} ></div>
+        </Spin>
       </div>
     )
   }
-
-  // if (flag) {
-  //   return (
-  //     <div classNameName={styles.dataview}>
-  //       <div classNameName={styles.topHeader}>
-  //         <div id={styles.header}>
-  //           <datav.Decoration5 classNameName={styles.headerCenterDecoration} />
-  //           <div classNameName={styles.centerTitle}>二次供水监控平台</div>
-  //         </div>
-  //       </div>
-  //       <div classNameName={styles.mainHeader}>
-  //         <div classNameName={styles.mhMiddle}><datav.Decoration3 /></div>
-  //       </div>
-  //       <datav.BorderBox1 classNameName={styles.mainContainer}>
-  //         <datav.BorderBox8 classNameName={styles.leftChartContainer}>
-  //           <div classNameName='wrap'>
-  //             <Product list={list} ></Product>
-  //             <datav.BorderBox10 classNameName='dvItem'>
-  //               <div classNameName='dvItem'>
-  //                 <div classNameName='dvitem_name'>
-  //                   设备总数
-  //                 </div>
-  //                 <div classNameName='dvitem_count'>
-  //                   {
-  //                     deviceCount.toString().split("").map((item, index) => {
-  //                       return (
-  //                         <div classNameName='count_col' key={index}>
-  //                           {item}
-  //                         </div>
-  //                       )
-  //                     })
-  //                   }
-  //                 </div>
-  //               </div>
-  //             </datav.BorderBox10>
-  //             <ActiveRing config={config}></ActiveRing>
-  //           </div>
-  //         </datav.BorderBox8>
-  //         <datav.BorderBox8 classNameName={styles.centerChartContainer}>
-  //           <div classNameName='centerContainer'>
-  //           <Maps></Maps>
-  //           <Scroll header={header} style={{marginTop:'10px'}} scrollData={scrollData} />
-  //           </div>
-
-  //         </datav.BorderBox8>
-  //         <datav.BorderBox8 classNameName={styles.rightChartContainer}>
-  //           <View></View>
-  //         </datav.BorderBox8>
-  //       </datav.BorderBox1>
-  //     </div>
-  //   );
-  // } else {
-  //   return (
-  //     <div classNameName={styles.dataview}>
-  //       <Loading style={{ backgroundColor: 'rgba(0, 200, 200, 0.8)' }} text="拼命加载中" classNameName={styles.loading}>
-  //         <div style={{ width: '100%', height: '100vh' }}></div>
-  //       </Loading>
-  //     </div>
-  //   )
-  // }
 
 }
 

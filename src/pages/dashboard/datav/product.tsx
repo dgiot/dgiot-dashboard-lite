@@ -2,8 +2,10 @@ import styles from "./style/product.module.less";
 // import React from "react"
 import axios from "axios";
 import React, { Component } from 'react';
-import { Loading } from 'element-react';
-import 'element-theme-default';
+import {
+
+  Spin
+} from '@arco-design/web-react';
 
 function Product(props) {
   // console.log(props);
@@ -37,9 +39,9 @@ function Product(props) {
   }else{
     return (
       <div>
-        <Loading  style={{backgroundColor: 'rgba(0, 200, 200, 0.8)'}} text="拼命加载中"  className={styles.loading}>
+        <Spin  style={{backgroundColor: 'rgba(0, 200, 200, 0.8)'}} tip="拼命加载中" loading="true" className={styles.loading}>
         <div className={styles.product}></div>
-      </Loading>
+      </Spin>
       </div>
     )
   }

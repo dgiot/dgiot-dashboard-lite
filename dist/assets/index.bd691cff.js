@@ -1,1 +1,0 @@
-import r from"./editor.9558c915.js";import{j as o}from"./vendor.ed5b4e33.js";import"./index.78d0590d.js";import"./tslib.70770226.js";import"./jsx-runtime_commonjs-proxy.fb97aa9c.js";function f(){return o(r,{})}export{f as default};
