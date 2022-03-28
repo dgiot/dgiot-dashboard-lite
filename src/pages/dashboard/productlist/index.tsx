@@ -101,7 +101,7 @@ function ProductList(props) {
     productSecret: '',
     roles: [],
     relationApp: role,
-  }); //采集通道
+  }); //设备基本信息设置
   const state = {
     columns: [
       {

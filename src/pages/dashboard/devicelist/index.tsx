@@ -1,4 +1,5 @@
 import React, { Dispatch, useState, useEffect, useRef, useCallback } from 'react'
+import useStorage from '@/utils/useStorage';
 import {
   Table,
   Select,
@@ -13,11 +14,13 @@ import {
   Radio,
   Message,
   Upload,
+  Popover,
   Modal,
   Tabs
 } from '@arco-design/web-react';
 import { IconCloseCircleFill, IconPlus, IconSearch } from '@arco-design/web-react/icon';
 // import 'element-theme-default';
+
 import styles from './style/index.module.less';
 import "./style/index.less"
 
@@ -61,14 +64,53 @@ function DeviceList() {
   const [currentPage, setCurrentPage] = useState(1); //当前页数
   const [inputValue, setInputValue] = useState(''); //输入的搜索名称
   const [visible, setVisible] = useState(false); //控制抽屉
-  const [status, setStatus] = useState(false); //控制抽屉
+  const [status, setStatus] = useState(''); //控制抽屉
   const [storChannel, setStorChannel] = useState([]); //存储通道
   const [taskChannel, setTaskChannel] = useState([]); //任务通道
   const [acquChannel, setAcquChannel] = useState([]); //采集通道  
   const [marklist, setMarkList] = useState([]); //设备位置 
+  const [equvalue, setEquValue] = useState(''); //搜索对应产品所属设备 
+  const [objectId, setObjectId] = useState(''); //搜索对应产品所属设备 
+  const [productDetail, setProductDetail] = useState({
+    devType: '',
+    category: {
+      className: '',
+      objectId: '',
+      __type: ''
+    }
+  }); //搜索对应产品所属设备 
+  const [center, setCenter] = useState({
+    lat: '',
+    lng: ''
+  }); //设备地理位置经纬度
+  const [videoOptions, setVideoOptions] = useState(['m3u8', 'mp4', 'flv', 'mp3']); //视频类型 
+  const [form, setForm] = useState({
+    videoSrc: '',
+    videoType: 'm3u8',
+    name: '',
+    devaddr: '',
+    batchId: '',
+    desc: '',
+    nodeType: 0,
+    devType: '',
+    netType: '',
+    assetNum: '',
+    devModel: '',
+    address: '',
+    productName: '',
+    status: '',
+    isEnable: '',
+    brand: '',
+  }); //采集通道
   const [searchValue, setSearchValue] = useState({
-    condition: '设备名称'
+    condition: '设备名称',
+    onlinedevices: '',
+    deviceinput: ''
   }); //设备位置 
+
+  //storage
+  const [role, setRole] = useStorage('role');
+
 
   const noLabelLayout = {
     wrapperCol: {
@@ -180,9 +222,98 @@ function DeviceList() {
       render: (col, record) => (
         <span>
           <Button style={{ marginRight: '5px', height: '40px' }} type="primary">详情</Button>
-          <Button style={{ marginRight: '5px', height: '40px' }} type="primary" status='warning' >编辑</Button>
+          <Button style={{ marginRight: '5px', height: '40px' }} type="primary" status='warning'
+            onClick={() => {
+              console.log(
+                record
+              );
+              setVisible(true)
+              setStatus("edit")
+
+              setForm({
+                ...form,
+                devaddr: record.devaddr,
+                name: record.name,
+                assetNum: record.detail.assetNum,
+                devModel: record.detail.devModel,
+                desc: record.detail.desc,
+                // productid: record.product.objectId,
+                brand: record.detail.brand,
+                productName: record.product.objectId,
+                status: record.status,
+                isEnable: record.isEnable,
+                videoType: record.detail.videoType,
+                videoSrc: record.detail.videoSrc,
+                address: record.detail.address,
+              })
+              setCenter({
+                ...center,
+                lat: record.location.latitude,
+                lng: record.location.longitude,
+              })
+              setObjectId(record.objectId)
+              // return ;
+              httpService.getClict({
+                url: `/iotapi/classes/Product/${record.product.objectId}`,
+              }).then(({ devType, category }) => {
+                // console.log(res);
+                setProductDetail({
+                  ...productDetail,
+                  devType: devType,
+                  category: category
+                })
+              })
+              return;
+
+              // console.log("form",newdata);
+
+
+
+            }}
+          >编辑</Button>
           <Button style={{ marginRight: '5px', height: '40px' }}>组态</Button>
-          <Button style={{ marginRight: '5px', height: '40px' }} type='primary' status='danger'>删除</Button>
+          <Popover
+            position='br'
+            content={
+              <span>
+                <div className='more_btn' style={{ color: "#339dff", cursor: 'pointer', padding: "5px 0" }}
+                  onClick={() => {
+                    console.log(record);
+                  }}
+                >迁移</div>
+                <div className='more_btn' style={{ color: "#ffba00", cursor: 'pointer', padding: "5px 0" }}
+                  onClick={() => {
+                    console.log(record);
+                  }}
+                >视频</div>
+                <div className='more_btn' style={{ color: "#ff4d4f", cursor: 'pointer', padding: "5px 0" }}
+                  onClick={() => {
+                    Modal.confirm({
+                      title: '温馨提示',
+                      content: '你确定要删除当前项吗',
+                      okButtonProps: { size: "small", status: 'danger' },
+                      cancelButtonProps: { size: "small", status: 'default' },
+                      okText: '确定',
+                      cancelText: '取消',
+                      onOk: () => {
+                        console.log(record);
+                        httpService.getClict({
+                          url:`/iotapi/classes/Device/${record.objectId}`,
+                          method:"DELETE"
+                        }).then(res=>{
+                          getDevices(skip,pageSize)
+                        })
+                        }
+                    });
+                  }}
+                >删除</div>
+              </span>
+            }
+          >
+            <Button style={{ marginRight: '5px', height: '40px' }} type='primary' status='danger'>
+              更多
+            </Button>
+          </Popover>
         </span>
       ),
 
@@ -223,30 +354,7 @@ function DeviceList() {
       .replace(/\.[\d]{3}Z/, '')
     return date // 2017-03-31 16:02:06
   }
-  function searchProduct(pagesize, inputValue) {
-    setLoading(true)
-    httpService.getClict({
-      url: '/iotapi/classes/Product',
-      params: {
-        count: "objectId",
-        order: "-updatedAt",
-        limit: pagesize,
-        excludeKeys: "channel,children,config,thing,decoder",
-        skip: 0,
-        include: "category,producttemplet",
-        where: inputValue ? { "name": { "$regex": inputValue } } : { "name": { "$ne": null } }
-      },
-    }).then(({ count, results }) => {
-      // console.log(count);
-      setTotal(count)
-      setLoading(false)
-      let list = []
-      results.forEach((element, index) => {
-        element.createdAt = utc2beijing(element.createdAt)
-      })
-      setproductList(results)
-    })
-  }
+
   //获取设备
   const fetchData = (pagesize, skip0) => {
     setLoading(true)
@@ -305,7 +413,7 @@ function DeviceList() {
       //   "sessionToken": localStorage.getItem('sessionToken')
       // }
     }).then(({ count, results }) => {
-      setTotal(count)
+      // setTotal(count)
       // setLoading(false)
       // let lists = []//存储通道 TD   cType
       // let listt = []//任务通道 INSTRUCT
@@ -320,11 +428,203 @@ function DeviceList() {
       // setAcquChannel(lista)
     })
   }
+  //替换页面
   const changecurrentPage = (value) => {
     setCurrentPage(value)
     setSkip(pageSize * (value - 1))
     //  state.currentPage = value
     fetchData(pageSize, pageSize * (value - 1))
+  }
+  //搜索获取设备列表
+  function getDevices(skip0, pagesize) {
+    // this.listLoading = true
+    // const loading = this.$baseColorfullLoading(3)
+    setLoading(true)
+    let queryPayload = {
+      include: '',
+      where: {},
+      order: '-createdAt',
+      count: 'objectId',
+      skip: skip0,
+      limit: pagesize,
+    }
+    queryPayload.include = 'product.name,name'
+    queryPayload.where = {
+      name:
+        searchValue.condition === '设备名称' && searchValue.deviceinput
+          ? { $regex: searchValue.deviceinput }
+          : {
+            $ne: null,
+            $exists: true,
+          },
+      devaddr:
+        searchValue.condition === '设备编号' && searchValue.deviceinput
+          ? { $regex: searchValue.deviceinput }
+          : { $ne: null },
+      status:
+        searchValue.onlinedevices == '在线'
+          ? 'ONLINE'
+          : searchValue.onlinedevices == '离线'
+            ? 'OFFLINE'
+            : { $ne: null },
+      product:
+        equvalue ? equvalue : { $ne: null }
+    }
+    console.log("查询条件", queryPayload);
+    httpService.getClict({
+      url: '/iotapi/classes/Device',
+      params: queryPayload
+    }).then(({ count, results }) => {
+      setTotal(count)
+      setLoading(false)
+      let list = []
+      results.forEach((element, index) => {
+        // element.createdAt = utc2beijing(element.createdAt)
+        let item = {
+          deviceName: element.name,
+          location: {
+            lat: element.location.latitude,
+            lng: element.location.longitude
+          },
+          objectId: element.objectId
+        }
+        list.push(item)
+      })
+      setdeviceList(results)
+      setMarkList(list)  //设置设备位置信息
+    })
+  }
+  //创建设备
+  async function createDevice(params) {
+    const res = await httpService.getClict({
+      url: '/iotapi/classes/Device',
+      method: 'post',
+      data: params
+    })
+    if (res.objectId) {
+      setVisible(false)
+      getDevices(skip, pageSize)
+    } else {
+      Message.error({
+        content: '添加失败', closable: true, duration: 3000
+      })
+    }
+  }
+  //更新设备
+  async function updateDevice(id, params) {
+    const res = await httpService.getClict({
+      url: `/iotapi/classes/Device/${id}`,
+      method: 'PUT',
+      data: params
+    })
+    if ((res as any).updatedAt || (res as any).devaddr) {
+      Message.success({ content: '更新成功', duration: 2000 })
+      getDevices(skip, pageSize)
+    } else {
+      Message.error({ content: '更新失败', duration: 2000 })
+      // this.$message({
+      //   type: 'error',
+      //   message: res.error,
+      // })
+    }
+  }
+  //添加设备 or 修改设备信息
+  function submitDevice(v) {
+    var location = {
+      __type: 'GeoPoint',
+      latitude: center.lat ? center.lat : 0,
+      longitude: center.lng ? center.lng : 0,
+    }
+    var detail = {
+      assetNum: form.assetNum,
+      devModel: form.devModel,
+      brand: form.brand,
+      address: form.address,
+      desc: form.desc,
+      videoType: form.videoType,
+      videoSrc: form.videoSrc,
+      devType: '',
+      category: ''
+    }
+    var obj = {
+      videoSrc: form.videoSrc,
+      videoType: form.videoType,
+      devaddr: form.devaddr
+    }
+    console.log(detail);
+
+    if (status == 'edit') {
+      //设备编辑
+      delete detail.devType
+      delete detail.category
+
+      var devicesParmas = {
+        name: form.name,
+        devaddr: form.devaddr,
+        product: {
+          __type: 'Pointer',
+          className: 'Product',
+          objectId: productDetail.category.objectId,
+        },
+        detail: detail,
+        location: location,
+        basedata: obj,
+        profile: obj,
+      }
+      console.log(devicesParmas);
+
+      // return 
+      updateDevice(objectId, devicesParmas)
+      setVisible(false)
+
+
+    } else {
+      var params = {
+        count: 'objectId',
+        where: {
+          name: { $in: [form.name] },
+          devaddr: { $in: [form.devaddr] },
+        },
+      }
+      httpService.getClict({
+        url: '/iotapi/classes/Device',
+        params: params
+      }).then(({ count }) => {
+        if (count > 0) {
+          Message.warning({ content: '此设备已被创建', closable: true, duration: 3000 });
+          return;
+        } else {
+          const aclKey = 'role' + ':' + role
+          const setAcl = {}
+          setAcl[aclKey] = {
+            read: true,
+            write: true,
+          }
+          console.log("权限", setAcl);
+          var devicesParmas = {
+            product: {
+              __type: 'Pointer',
+              className: 'Product',
+              objectId: form.productName,
+            },
+            status: 'OFFLINE',
+            isEnable: false,
+            ACL: setAcl,
+            name: form.name,
+            devaddr: form.devaddr,
+            objectId: form.devaddr,
+            lastOnlineTime: 0,
+            detail: detail,
+            location: location,
+            basedata: obj,
+          }
+          devicesParmas.detail.devType = productDetail.devType
+          devicesParmas.detail.category = productDetail.category.objectId
+          console.log('createDevice params\n ', devicesParmas)
+          createDevice(devicesParmas)
+        }
+      })
+    }
   }
   useEffect(() => {
     fetchData(pageSize, skip);
@@ -344,9 +644,15 @@ function DeviceList() {
                         <Form size="large" layout="inline" className={styles.form_dwrap} style={{ display: 'flex', width: "100%", flexDirection: "row" }}>
 
                           <Form.Item label="所属产品" field='name'>
-                            <Select style={{ width: 200 }} size="large" placeholder='请选择' >
+                            <Select style={{ width: 200 }} size="large" value={equvalue} allowClear onChange={(v) => {
+                              console.log(v);
+                              setEquValue(v)
+                              console.log(equvalue);
+
+
+                            }} placeholder='请选择' >
                               {productList.map((option, index) => (
-                                <Option key={option.objectId}  value={option.objectId}>
+                                <Option key={option.objectId} value={option.objectId}>
                                   {option.name}
                                 </Option>
                               ))}
@@ -354,12 +660,20 @@ function DeviceList() {
                           </Form.Item>
 
                           <Form.Item field='age' label='设备状态' >
-                            <Select style={{ width: 130 }} placeholder='请选择' >
+                            <Select style={{ width: 130 }} allowClear value={searchValue.onlinedevices} placeholder='请选择'
+                              onChange={(v) => {
+                                console.log(v);
+                                setSearchValue({
+                                  ...searchValue,
+                                  onlinedevices: v
+                                })
+
+                              }} >
                               <Select.Option value='在线'>在线</Select.Option>
                               <Select.Option value='离线'>离线</Select.Option>
                             </Select>
                           </Form.Item>
-                          <Form.Item field='age' label='搜索条件' >
+                          <Form.Item field='deviceinput' label='搜索条件' >
                             <Input
                               style={{ width: 450, marginBottom: 24, marginRight: 24 }}
                               addBefore={
@@ -375,12 +689,51 @@ function DeviceList() {
                               }
                               addAfter={<IconSearch onClick={() => {
                                 console.log(searchValue);
-                              }} style={{ color: "#00f", cursor: 'pointer' }} />}
+                                console.log(!equvalue);
+                                setCurrentPage(1)
+                                return getDevices(skip, pageSize)
+                              }}
+                                style={{ color: "#00f", cursor: 'pointer' }} />}
                               allowClear={true}
                               placeholder={searchValue.condition == '设备名称' ? '请输入设备名称' : '请输入设备编号'}
+                              value={searchValue.deviceinput}
+                              onChange={(v) => {
+                                setSearchValue({
+                                  ...searchValue,
+                                  deviceinput: v
+                                })
+                              }}
                             />
                           </Form.Item>
+                          <Button type='primary' icon={<IconPlus />} onClick={() => {
+                            setVisible(true);
+                            setStatus("add");
+                            setCenter({
+                              ...center,
+                              lat: '',
+                              lng: ''
+                            })
+                            setForm({
+                              videoSrc: '',
+                              videoType: 'm3u8',
+                              name: '',
+                              devaddr: '',
+                              batchId: '',
+                              desc: '',
+                              nodeType: 0,
+                              devType: '',
+                              netType: '',
+                              assetNum: '',
+                              devModel: '',
+                              address: '',
+                              productName: '',
+                              status: '',
+                              isEnable: '',
+                              brand: '',
+                            })
+                          }} />
                         </Form>
+
                         {/* <input className={styles.dvtopInput} value={inputValue}
                           placeholder="请输入产品名称搜索"
                           onChange={e => {
@@ -407,12 +760,12 @@ function DeviceList() {
                       <Spin loading={loading}>
                         <Table
                           style={{ height: '550px', width: '80%' }}
-                          rowSelection={{
-                            type: 'checkbox',
-                            onChange: (selectedRowKeys, selectedRows) => {
-                              console.log(selectedRowKeys, selectedRows);
-                            },
-                          }}
+                          // rowSelection={{
+                          //   type: 'checkbox',
+                          //   onChange: (selectedRowKeys, selectedRows) => {
+                          //     console.log(selectedRowKeys, selectedRows);
+                          //   },
+                          // }}
                           columns={columns}
                           scroll={{ y: 550, x: true }}
                           data={deviceList}
@@ -424,12 +777,22 @@ function DeviceList() {
                       </Spin>
                     </div>
                     <div className={styles.dvc_bottom}>
-                      <Pagination total={total} pageSize={pageSize} sizeOptions={[5, 10, 20, 50]} sizeCanChange current={currentPage}
+                      <Pagination total={total} showTotal pageSize={pageSize} sizeOptions={[5, 10, 20, 50]} sizeCanChange current={currentPage}
                         onChange={(pageNumber, pagesize) => {
                           if (pageNumber != currentPage) {
+                            if (equvalue || searchValue.onlinedevices || searchValue.deviceinput) {
+                              // console.log("1111");
+                              setCurrentPage(pageNumber)
+                              setSkip(pageSize * (pageNumber - 1))
+                              return getDevices(pageSize * (pageNumber - 1), pageSize)
+
+
+                            }
                             return changecurrentPage(pageNumber)
-                          } else if (pagesize != pageSize)
+                          } else if (pagesize != pageSize) {
                             return changePageSize(pagesize)
+                          }
+
                         }}
                       />
                     </div>
@@ -444,191 +807,231 @@ function DeviceList() {
       </Tabs>
 
       <div>
-        <Drawer
-          width="70%"
-          title={<span style={{ color: '#999', fontSize: "24px", marginLeft: '10px' }}>{status ? '创建产品' : '修改产品'}</span>}
-          visible={visible}
-          footer={null}
-          onOk={() => {
-            setVisible(false);
-          }}
-          onCancel={() => {
-            setVisible(false);
-          }}
-        >
-          <div>
-            <div style={{ fontSize: '20px', padding: '15px 10px', color: '#888', display: 'flex' }}>
-              <div>产品信息</div>
-              <div style={{ width: '90%', height: '20px', marginLeft: '20px', borderBottom: '1px #ccc dashed' }} /></div>
-            <Form
-              {...formItemLayout}
-              size='large'
-              initialValues={{
-                slider: 20,
-                'a.b[0].c': ['b'],
-              }}
-              // onValuesChange={onValuesChange}
-              scrollToFirstError
-              onSubmit={(v) => {
-                console.log(v);
-              }}
-            >
-              <FormItem
-                label='产品名称'
-                field='name'
-                rules={[{ required: true, message: '请输入产品' }]}
-              >
-                <Input />
-              </FormItem>
-              <FormItem label='设备厂家' field='age' rules={[{ required: true, message: '请输入厂家' }]}>
-                <Input />
-              </FormItem>
-              <FormItem
-                label='所属品类'
-                field='channel.type'
-                rules={[{ required: true, message: '请输入所属分类' }]}
-              >
-                <Radio.Group size="large" defaultValue='1'>
-                  <Radio value='0' disabled>标准品类</Radio>
-                  <Radio value='1'>自定义品类</Radio>
-                </Radio.Group>
-              </FormItem>
-              <FormItem
-                label='存储通道'
-                field='channel.tdchannel'
-                rules={[
-                  {
-                    required: true,
-                    message: "请输入存储通道"
-                  }
-                ]}
-              >
-                <Select>
-                  {storChannel.map((option, index) => (
-                    <Option key={option.objectId} value={option.objectId}>
-                      {option.name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormItem>
-              <FormItem label='任务通道' field='channel.taskchannel' rules={[{ required: true, message: "请输入任务通道" }]}>
-                <Select
-                  onChange={(value) => Message.info({ content: `You select ${value}.`, showIcon: true })}
-                >
-                  {taskChannel.map((option, index) => (
-                    <Option key={option.objectId} value={option.objectId}>
-                      {option.name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormItem>
-              <FormItem label='采集通道' field='channel.otherchannel' rules={[{ required: true, message: "请输入采集通道" }]}>
-                <Select
-                  mode='multiple'
-                >
-                  {acquChannel.map((option, index) => (
-                    <Option key={option.objectId} value={option.objectId}>
-                      {option.name}
-                    </Option>
-                  ))}
-                </Select>
-              </FormItem>
-              <FormItem
-                label='当前部门'
-                required
-                field='a.b[0].c'
-                rules={[
-                  {
-                    type: 'array',
-                    minLength: 1,
-                    message: 'choice is required',
-                  },
-                ]}
-              >
-                <Select options={['a', 'b', 'c', 'd', 'e']} />
-              </FormItem>
-              <FormItem
-                label='节点类型'
-                field='treenode'
-                rules={[
-                  {
-                    required: true,
-                    message: 'treenode is required',
-                  },
-                ]}
-              >
-                <Radio.Group defaultValue='3'>
-                  <Radio value='3'>直连设备</Radio>
-                  <Radio value='1'>网关设备</Radio>
-                  <Radio value='2'>
-                    网关分组设备
-                  </Radio>
-                  <Radio value='0'>网关子设备</Radio>
-                </Radio.Group>
-              </FormItem>
-              <FormItem
-                label='连网方式'
-                field='score'
-              >
-                <Select style={{ width: '200px' }} placeholder='please select' options={['a', 'b', 'c', 'd', 'e']} />
-              </FormItem>
-              <Form.Item
-                label='图标'
-                field='upload'
-                triggerPropName='fileList'
+        {
+          visible ? (<Drawer
+            width="50%"
+            title={<span style={{ color: '#999', fontSize: "24px", marginLeft: '10px' }}>{status ? '创建产品' : '修改产品'}</span>}
+            visible={visible}
+            footer={null}
+            onOk={() => {
+              setVisible(false);
+            }}
+            onCancel={() => {
+              setVisible(false);
+            }}
+          >
+            <div>
+              <div style={{ fontSize: '20px', padding: '15px 10px', color: '#888', display: 'flex' }}>
+                <div>设备信息</div>
+                <div style={{ width: '85%', height: '20px', marginLeft: '20px', borderBottom: '1px #ccc dashed' }} /></div>
+              <Form
+                {...formItemLayout}
+                size='large'
+                initialValues={form}
+                // onValuesChange={onValuesChange}
+                scrollToFirstError
+                onSubmit={(v) => {
+                  console.log(form);
+                  return submitDevice(v);
 
+                  // return submitProduct(v)
+                }}
               >
-                <Upload
-                  listType='picture-card'
-                  multiple
-                  name='files'
-                  action='/'
-                  onPreview={(file) => {
-                    Modal.info({
-                      title: 'Preview',
-                      content: (
-                        <img
-                          src={file.url || URL.createObjectURL(file.originFile)}
-                          style={{ maxWidth: '100%' }}
-                        ></img>
-                      ),
-                    });
-                  }}
-                />
-              </Form.Item>
-              <FormItem label='描述' field='desc'>
-                <Input />
-              </FormItem>
-              <FormItem {...noLabelLayout}>
-                <Button
-                  // onClick={async () => {
-                  //   if (formRef.current) {
-                  //     try {
-                  //       await formRef.current.validate();
-                  //       Message.info('校验通过，提交成功！');
-                  //     } catch (_) {
-                  //       console.log(formRef.current.getFieldsError());
-                  //       Message.error('校验失败，请检查字段！');
-                  //     }
-                  //   }
-                  // }}
-                  type='primary'
-                  style={{ marginRight: 24 }}
-                  htmlType='submit'
+                <FormItem
+                  label='设备名称'
+                  field='name'
+                  rules={[{ required: true, message: '请输入设备名称' }]}
                 >
-                  确定
-                </Button>
-                <Button
-                  onClick={() => {
-                    setVisible(false)
-                  }}
+                  <Input onChange={(value) => {
+                    setForm({
+                      ...form,
+                      name: value
+                    })
+                    // setForm({
+                    //   relationApp:value
+                    // })
+
+                  }} />
+                </FormItem>
+                <FormItem label='设备编号' field='devaddr' rules={[{ required: true, message: '请输入设备编号' }]}>
+                  <Input disabled={status == "edit"}
+                    onChange={(value) => {
+                      // let currentform =  form
+                      // currentform.relationApp = value
+                      setForm({
+                        ...form,
+                        devaddr: value
+                      })
+                      // setForm({
+                      //   relationApp:value
+                      // })
+
+                    }} />
+                </FormItem>
+                <FormItem
+                  label='产品名称'
+                  field='productName'
+                  rules={[
+                    {
+                      required: true,
+                      message: "请选择产品"
+                    }
+                  ]}
                 >
-                  取消
-                </Button>
-              </FormItem>
-            </Form>
-          </div>
-        </Drawer>
+                  <Select
+
+                    style={{ width: 200 }}
+                    disabled={status == "edit"}
+                    value={form.productName}
+                    placeholder="请选择"
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        productName: value
+                      })
+                      httpService.getClict({
+                        url: `/iotapi/classes/Product/${value}`,
+                      }).then(({ devType, category }) => {
+                        // console.log(res);
+                        setProductDetail({
+                          ...productDetail,
+                          devType: devType,
+                          category: category
+                        })
+                      })
+                    }}
+                  >
+                    {productList.map((option, index) => (
+                      <Option key={option.objectId} value={option.objectId}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormItem>
+                <FormItem label='资产编号' field='assetNum'>
+                  <Input
+                    value={form.assetNum}
+
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        assetNum: value
+                      })
+                    }}
+                  />
+
+                </FormItem>
+                <FormItem label='设备型号' field='devModel' >
+                  <Input
+                    value={form.devModel}
+                    onChange={(value) => {
+                      // console.log(value);
+                      setForm({
+                        ...form,
+                        devModel: value
+                      })
+                    }}
+                  />
+                </FormItem>
+                <FormItem
+                  label='设备品牌'
+                  field="brand"
+                >
+                  <Input value={form.brand} onChange={(value) => {
+                    // let currentform =  form
+                    // currentform.relationApp = value
+                    setForm({
+                      ...form,
+                      brand: value
+                    })
+                    // setForm({
+                    //   relationApp:value
+                    // })
+
+                  }} />
+                </FormItem>
+                <FormItem
+                  label='安装位置'
+                  field='address'
+                >
+                  <Input
+                    value={form.address}
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        address: value
+                      })
+                      // setForm({
+                      //   relationApp:value
+                      // })
+
+                    }} />
+                </FormItem>
+                <FormItem
+                  label='视频地址'
+                  field='videoSrc'
+
+                >
+                  <Input
+                    value={form.videoSrc}
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        videoSrc: value
+                      })
+                      // setForm({
+                      //   relationApp:value
+                      // })
+
+                    }} />
+                </FormItem>
+                <Form.Item
+                  label='视频类型'
+                  field='videoType'
+
+                >
+                  <Select style={{ width: 200 }} value={form.videoType} placeholder="请选择"
+                    onChange={(value) => {
+                      setForm({
+                        ...form,
+                        videoType: value
+                      })
+                    }}>
+                    {videoOptions.map((option, index) => (
+                      <Option key={option} value={option}>
+                        {option}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+                <FormItem label='描述' field='desc'>
+                  <Input value={form.desc} onChange={(value) => {
+                    setForm({
+                      ...form,
+                      desc: value
+                    })
+                  }} />
+                </FormItem>
+                <FormItem {...noLabelLayout}>
+                  <Button
+                    type='primary'
+                    style={{ marginRight: 24 }}
+                    htmlType='submit'
+                  >
+                    确定
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setVisible(false)
+                    }}
+                  >
+                    取消
+                  </Button>
+                </FormItem>
+              </Form>
+            </div>
+          </Drawer>) : (<div style={{ display: 'none' }}></div>)
+        }
       </div>
     </div>
   );
