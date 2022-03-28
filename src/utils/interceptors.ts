@@ -59,10 +59,9 @@ export class Interceptors {
         //   }
         // }
 
-        if (res.status === 200) {
+        if (res.status === 200 ||res.status === 201 ) {
           return Promise.resolve(res.data);
         } else {
-          
           this.errorHandle(res);
           return Promise.reject(res.data);
         }
@@ -71,7 +70,7 @@ export class Interceptors {
       (error) => {
         const { response } = error;
         console.log("111",response);
-        if(response.status==401){
+        if(response?.status==401){
           // history.push('/login')
           location.href='/login'
         }
@@ -96,7 +95,10 @@ export class Interceptors {
   */
   private errorHandle(res: any) {
     // 状态码判断
+    console.log("状态",res);
     switch (res.status) {
+     
+      
       case 401:
         break;
       case 403:

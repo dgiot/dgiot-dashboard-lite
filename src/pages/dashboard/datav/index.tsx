@@ -4,7 +4,7 @@ import Product from "./product";
 import ActiveRing from "./activeRing";
 import Scroll from "./scroll";
 import Maps from './maps';
-import DeviceMap from './deviceMap'
+
 
 import Pie from "./pie";
 import LineDiv from './linediv'
@@ -568,7 +568,7 @@ function Datav() {
     return (
       <div className={styles.datav}>
         <Spin style={{ backgroundColor: 'rgba(0, 200, 200, 0.8)' }} tip="拼命加载中" loading="true" className={styles.loading}>
-          <div style={{ width: '100%', height: '100vh' }} ></div>
+          <div style={{ width: '100vw', height: '100vh' }} ></div>
         </Spin>
       </div>
     )

@@ -22,10 +22,10 @@ export const routes: Route[] = [
         name: 'menu.dashboard.productlist',
         key: 'dashboard/productlist',
       },
-      // {
-      //   name: 'menu.dashboard.devicelist',
-      //   key: 'dashboard/devicelist',
-      // },
+      {
+        name: 'menu.dashboard.devicelist',
+        key: 'dashboard/devicelist',
+      },
       {
         name: 'menu.dashboard.monitor',
         key: 'dashboard/monitor',
@@ -82,50 +82,50 @@ export const routes: Route[] = [
       },
     ],
   },
-  // {
-  //   name: 'menu.list',
-  //   key: 'list',
-  //   children: [
-  //     {
-  //       name: 'menu.list.searchTable',
-  //       key: 'list/search-table',
-  //     },
-  //     {
-  //       name: 'menu.list.cardList',
-  //       key: 'list/card',
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: 'menu.form',
-  //   key: 'form',
-  //   children: [
-  //     {
-  //       name: 'menu.form.group',
-  //       key: 'form/group',
-  //       requiredPermissions: [
-  //         { resource: 'menu.form.group', actions: ['read', 'write'] },
-  //       ],
-  //     },
-  //     {
-  //       name: 'menu.form.step',
-  //       key: 'form/step',
-  //       requiredPermissions: [
-  //         { resource: 'menu.form.step', actions: ['read'] },
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: 'menu.profile',
-  //   key: 'profile',
-  //   children: [
-  //     {
-  //       name: 'menu.profile.basic',
-  //       key: 'profile/basic',
-  //     },
-  //   ],
-  // },
+  {
+    name: 'menu.list',
+    key: 'list',
+    children: [
+      {
+        name: 'menu.list.searchTable',
+        key: 'list/search-table',
+      },
+      {
+        name: 'menu.list.cardList',
+        key: 'list/card',
+      },
+    ],
+  },
+  {
+    name: 'menu.form',
+    key: 'form',
+    children: [
+      {
+        name: 'menu.form.group',
+        key: 'form/group',
+        requiredPermissions: [
+          { resource: 'menu.form.group', actions: ['read', 'write'] },
+        ],
+      },
+      {
+        name: 'menu.form.step',
+        key: 'form/step',
+        requiredPermissions: [
+          { resource: 'menu.form.step', actions: ['read'] },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'menu.profile',
+    key: 'profile',
+    children: [
+      {
+        name: 'menu.profile.basic',
+        key: 'profile/basic',
+      },
+    ],
+  },
 
   // {
   //   name: 'menu.result',

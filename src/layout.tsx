@@ -25,6 +25,7 @@ import useLocale from './utils/useLocale';
 import getUrlParams from './utils/getUrlParams';
 import lazyload from './utils/lazyload';
 import { GlobalState } from './store';
+
 import styles from './style/layout.module.less';
 
 const MenuItem = Menu.Item;

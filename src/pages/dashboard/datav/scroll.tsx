@@ -10,7 +10,7 @@ import * as datav from '@jiaminghi/data-view-react';
   //   align: ['center']
   // }
   function Scroll(props) {
-    console.log(props);
+    // console.log(props);
     if(props!={}){
       let config = {
         header: props.header,

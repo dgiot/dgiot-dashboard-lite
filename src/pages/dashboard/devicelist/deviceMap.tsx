@@ -1,24 +1,21 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import { Map, Marker, InfoWindow, APILoader } from '@uiw/react-baidu-map';
-import "./style/maps.less"
+import "./style/devicemap.less"
 import big from "@/assets/datav/img/map/big.png";
 import small from "@/assets/datav/img/map/small.png";
 
-function Maps(props) {
-
-  // console.log("这是传参", props);
-  const handleToDetail = (id) => {
-    console.log('点击事件', id);
-
-  }
+function DeviceMap(props) {
   const [visiable, setVisiable] = useState(false);
   const [isinfoFlag, setinfoFlag] = useState(false);
   const [showAll, setshowAll] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [content, setContent] = useState("");
   const [nowPn, setnowPosition] = useState({ lng: 120.161324, lat: 30.262441 });
-
+  console.log("这是传参", props);
+  const handleToDetail = (id) => {
+    console.log('点击事件', id);
+  }
   //打开设备位置气泡查看基本信息
   const handleOpen = (item) => {
     console.log("悬浮marker", item);
@@ -48,7 +45,6 @@ function Maps(props) {
     <div className={["left_item", showAll === true ? "mapactive" : 'mapunactive'].join(' ')}>
       <APILoader akay="GTrnXa5hwXGwgQnTBG28SHBubErMKm3f">
         <Map
-
           ref={(props) => {
             if (props && props.map) {
               // 启用滚轮放大缩小，默认禁用
@@ -109,7 +105,7 @@ function Maps(props) {
           {
             props.marklist.map((item, index) => {
               return (
-                <Marker key={index} position={item.location} onDblClick={() => {
+                <Marker key={item.objectId+index} position={item.location} onDblClick={() => {
                   return handleToDetail(item.objectId)
                 }} onClick={() => {
                   return handleOpen(item)
@@ -139,7 +135,7 @@ function Maps(props) {
   // return <Demo markerlist ={props?.marklist} />;
 }
 function areEqual(prevProps, newxProps) {
-  // console.log(prevProps.marklist);
+  console.log("比较",prevProps.marklist);
   if (prevProps.marklist == undefined) {
     return false;
   } else {
@@ -150,4 +146,4 @@ function areEqual(prevProps, newxProps) {
   }
 
 }
-export default React.memo(Maps, areEqual);
+export default React.memo(DeviceMap, areEqual);
