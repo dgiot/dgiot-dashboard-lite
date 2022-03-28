@@ -90,6 +90,7 @@ const i18n = {
     'menu.user.role.user': '普通用户',
     'menu.dashboard.workplace': '工作台',
     'menu.dashboard.productlist': '产品管理',
+    'menu.dashboard.userlist': '用户管理',
     'menu.dashboard.devicelist': '设备管理',
     'navbar.logout': '退出登录',
     'settings.title': '页面配置',

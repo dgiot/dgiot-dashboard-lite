@@ -9,13 +9,13 @@ import {
 import { FormInstance } from '@arco-design/web-react/es/Form';
 import { IconLock, IconUser } from '@arco-design/web-react/icon';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
 import axios from 'axios';
 import useStorage from '@/utils/useStorage';
 import useLocale from '@/utils/useLocale';
 import locale from './locale';
 import styles from './style/index.module.less';
-
 import Cookies from 'js-cookie';
 window.dgiotStore = Cookies;
 export default function LoginForm() {
@@ -25,18 +25,17 @@ export default function LoginForm() {
   // const [role, setRole] = useState('');
   const [loginParams, setLoginParams, removeLoginParams] =
     useStorage('loginParams');
-    const [role, setRole] = useStorage('role');
+  const [role, setRole] = useStorage('role');
   const t = useLocale(locale);
   const dispatch = useDispatch();
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
-
   /**
    * 代理成功的回调
    * @param params
    * @param storeInfo
    */
   function afterLoginSuccess(params, storeInfo) {
-   
+
     // 记住密码
     if (rememberPassword) setLoginParams(JSON.stringify(params));
     else removeLoginParams();
@@ -55,36 +54,36 @@ export default function LoginForm() {
   }
 
   function login(params) {
-    
+
     setErrorMessage('');
     setLoading(true);
     // if (process.env.NODE_ENV === 'development') {
-      axios
-        .post(
-          '/iotapi/login',
-          {
-            username: params.userName,
-            password: params.password,
-          },
-          { headers: { 'Content-Type': 'text/plain' } }
-        )
-        .then((res) => {
-          const { access_token,sessionToken } = res.data;
-          console.log("登录",res);
-          console.log(res.data.roles[0].name);
-          // return 
-          setRole(res.data.roles[0].name)
-          if (sessionToken) {
-            // 记录登录状态
-            localStorage.setItem('sessionToken',sessionToken)
-            afterLoginSuccess(params, res.data);
-          } else {
-            setErrorMessage(t['login.form.login.errMsg']);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+    axios
+      .post(
+        '/iotapi/login',
+        {
+          username: params.userName,
+          password: params.password,
+        },
+        { headers: { 'Content-Type': 'text/plain' } }
+      )
+      .then((res) => {
+        const { access_token, sessionToken } = res.data;
+        // console.log("登录",res);
+        // console.log(res.data.roles[0].name);
+        // return 
+        setRole(res.data.roles[0].name)
+        if (sessionToken) {
+          // 记录登录状态
+          localStorage.setItem('sessionToken', sessionToken)
+          afterLoginSuccess(params, res.data);
+        } else {
+          setErrorMessage(t['login.form.login.errMsg']);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     // } else {
     //   afterLoginSuccess(params, params);
     // }
@@ -94,7 +93,7 @@ export default function LoginForm() {
     formRef.current.validate().then((values) => {
       console.log(values);
       // return ;
-      
+
       login(values);
     });
   }

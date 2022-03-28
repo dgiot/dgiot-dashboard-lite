@@ -27,6 +27,10 @@ export const routes: Route[] = [
         key: 'dashboard/devicelist',
       },
       {
+        name: 'menu.dashboard.userlist',
+        key: 'dashboard/userlist',
+      },
+      {
         name: 'menu.dashboard.monitor',
         key: 'dashboard/monitor',
         requiredPermissions: [
