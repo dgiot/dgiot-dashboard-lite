@@ -171,7 +171,7 @@ function DeviceList() {
     },
     {
       title: "单位",
-      dataIndex: "ACL.role",
+      dataIndex: "Company",
       width: 200,
       align: "center",
       // sortable: true,
@@ -325,10 +325,11 @@ function DeviceList() {
       {
         id: 10001,
         name: '设备列表'
-      }, {
-        id: 10002,
-        name: '设备地图'
       }
+      // , {
+      //   id: 10002,
+      //   name: '设备地图'
+      // }
     ],
     marklist: [
       {
@@ -385,6 +386,16 @@ function DeviceList() {
           objectId: element.objectId
         }
         list.push(item)
+        if (element.ACL) {
+          for (var key in element.ACL) {
+            console.log(key);
+            
+            element.Company = key.substr(5)
+            // obj.applicationtText = key ? key.substr(5) : ''
+          }
+        } else {
+          element.Company = ''
+        }
       })
       setdeviceList(results)
       setMarkList(list)  //设置设备位置信息
@@ -489,6 +500,16 @@ function DeviceList() {
           objectId: element.objectId
         }
         list.push(item)
+        if (element.ACL) {
+          for (var key in element.ACL) {
+            console.log(key);
+            
+            element.Company = key.substr(5)
+            // obj.applicationtText = key ? key.substr(5) : ''
+          }
+        } else {
+          element.Company = ''
+        }
       })
       setdeviceList(results)
       setMarkList(list)  //设置设备位置信息
@@ -501,7 +522,7 @@ function DeviceList() {
       method: 'post',
       data: params
     })
-    if (res.objectId) {
+    if ((res as any).objectId) {
       setVisible(false)
       getDevices(skip, pageSize)
     } else {
@@ -594,6 +615,7 @@ function DeviceList() {
           Message.warning({ content: '此设备已被创建', closable: true, duration: 3000 });
           return;
         } else {
+          
           const aclKey = 'role' + ':' + role
           const setAcl = {}
           setAcl[aclKey] = {
@@ -601,6 +623,7 @@ function DeviceList() {
             write: true,
           }
           console.log("权限", setAcl);
+          // return ;
           var devicesParmas = {
             product: {
               __type: 'Pointer',
